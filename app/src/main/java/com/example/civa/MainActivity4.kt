@@ -1,12 +1,15 @@
 package com.example.civa
 
 
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.InputType.*
 import android.view.Gravity
 import android.view.Gravity.CENTER
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBar
 
@@ -14,6 +17,7 @@ import androidx.appcompat.app.ActionBar
 class MainActivity4 : AppCompatActivity() {
     private lateinit var result:TextView
     private lateinit var button1:Button
+    private lateinit var button: Button
     private lateinit var linear:LinearLayout
     private var n = 0
     private var numberOfColumns = 5
@@ -25,8 +29,10 @@ class MainActivity4 : AppCompatActivity() {
         setContentView(R.layout.activity_main4)
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
+
+        button = findViewById(R.id.button3)
         result = findViewById(R.id.textView)
-        button1  = findViewById(R.id.button2)
+        button1 = findViewById(R.id.button2)
         linear = findViewById(R.id.es_linear)
         val aba = intent!!.extras!!.getString("N").toString().toInt()
         n = aba
@@ -49,7 +55,6 @@ class MainActivity4 : AppCompatActivity() {
         }
         linear.addView(gridLayout)
 
-
         button1.setOnClickListener {
             for(i in 0 until n){
                 for(j in 0 until n){
@@ -57,19 +62,30 @@ class MainActivity4 : AppCompatActivity() {
                         editTexts[i][j]?.error = "Incorrect number"
                         return@setOnClickListener
                     }
-                    else if(editTexts[i][j]!!.text.toString() == "-"){
+                    if(editTexts[i][j]!!.text.toString() == "-"){
                         editTexts[i][j]?.error = "Incorrect number"
                         return@setOnClickListener
                     }
-                    else if(editTexts[i][j]!!.text.toString() == "." ||
+                    if(editTexts[i][j]!!.text.toString() == "." ||
                         editTexts[i][j]!!.text.toString() == ".0"){
                         editTexts[i][j]?.error = "Incorrect number"
                         return@setOnClickListener
                     }
                     array[i][j] = editTexts[i][j]?.text.toString().toDouble()
-                    aba()
                 }
             }
+            button1.isEnabled = false
+            button.isClickable = false
+            aba()
+        }
+        button.setOnClickListener {
+            for (i in 0 until n) {
+                for (j in 0 until n) {
+                    editTexts[i][j]?.text = null
+                    array[i][j] = 0.0
+                }
+            }
+            result.text = "RESULT: "
         }
     }
 
@@ -89,24 +105,59 @@ class MainActivity4 : AppCompatActivity() {
         editText.setTextColor(Color.BLACK)
     }
     private fun aba() {
+        result.text = "RESULT: "
+        val progressBar1 = findViewById<ProgressBar>(R.id.progressBar)
+        progressBar1.visibility = View.VISIBLE
+        progressBar1.max = 100
+        progressBar1.progress = 0
+        val handler = Handler()
+        ObjectAnimator.ofInt(progressBar1, "progress", 100)
+            .setDuration(1000)
+            .start()
+
         var sum = 0.0
         if(n == 2){
             val result2x2 = array[0][0] * array[1][1] - array[1][0]*array[0][1]
             if (sum.toString().contains(".0")) {
-                result.text = "RESULT: ${result2x2.toString().dropLast(2)}"
+                handler.postDelayed({
+                        result.text = "RESULT: ${result2x2.toString().dropLast(2)}"
+                        progressBar1.visibility = View.INVISIBLE
+                        button1.isEnabled = true
+                        button.isClickable = true
+                    },1000)
+
             }
             else {
-                result.text = "RESULT: $result2x2"
+                handler.postDelayed({
+                    result.text = "RESULT: $result2x2"
+                    progressBar1.visibility = View.INVISIBLE
+                    button1.isEnabled = true
+                    button.isClickable = true
+                },1000)
+
             }
         }
+
         else {
             for (i in 0 until n) {
                 sum += determinant(i, 0, 0, saveArray)
             }
             if (sum.toString().contains(".0")) {
-                result.text = "RESULT: ${sum.toString().dropLast(2)}"
-            } else {
-                result.text = "RESULT: $sum"
+                handler.postDelayed(
+                    {result.text = "RESULT: ${sum.toString().dropLast(2)}"
+                        progressBar1.visibility = View.INVISIBLE
+                        button1.isEnabled = true
+                        button.isClickable = true
+                    },
+                    1000)
+            }
+            else {
+                handler.postDelayed({
+                    result.text = "RESULT: $sum"
+                    progressBar1.visibility = View.INVISIBLE
+                    button1.isEnabled = true
+                    button.isClickable = true
+                },1000)
             }
         }
     }
@@ -165,4 +216,5 @@ class MainActivity4 : AppCompatActivity() {
             return sum
         }
     }
+
 }
