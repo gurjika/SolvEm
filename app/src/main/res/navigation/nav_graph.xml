@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmenCalculate"
-        android:name="com.example.civa.fragment.FragmenCalculate"
+        android:name="com.example.civa.fragment.FragmentCalculate"
         android:label="FragmenCalculate" />
     <fragment
         android:id="@+id/fragmentHelp"

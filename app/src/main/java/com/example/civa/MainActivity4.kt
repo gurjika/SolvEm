@@ -134,7 +134,6 @@ class MainActivity4 : AppCompatActivity() {
                     button1.isEnabled = true
                     button.isClickable = true
                 },1000)
-
             }
         }
 
