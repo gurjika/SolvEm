@@ -1,10 +1,8 @@
 package com.example.civa
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.ActionBar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController

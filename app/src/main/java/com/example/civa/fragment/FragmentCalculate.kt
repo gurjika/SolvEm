@@ -24,7 +24,7 @@ class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
         super.onViewCreated(view, savedInstanceState)
         button = view.findViewById(R.id.button)
         linearLayout = view.findViewById(R.id.linearLayout)
-        buttons = Array(6) { arrayOfNulls<Button>(6) }
+        buttons = Array(6) { arrayOfNulls(6) }
         textDimension = view.findViewById(R.id.textView3)
         val gridLayout = GridLayout(activity)
         gridLayout.rowCount = 6

@@ -215,5 +215,4 @@ class MainActivity4 : AppCompatActivity() {
             return sum
         }
     }
-
 }
