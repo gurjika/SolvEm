@@ -3,10 +3,10 @@
 
     <item
         android:title="Calculate"
-        android:id="@+id/fragmenCalculate"
+        android:id="@+id/fragmentHome"
         android:icon="@drawable/ic_baseline_calculate_24"
         />
     <item android:title="See how"
-        android:id="@+id/fragmentHelp"
+        android:id="@+id/fragmentHelpHolder"
         android:icon="@drawable/ic_baseline_help_24"/>
 </menu>

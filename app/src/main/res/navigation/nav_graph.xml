@@ -3,14 +3,172 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmenCalculate">
+    app:startDestination="@id/fragmentHome">
 
     <fragment
         android:id="@+id/fragmenCalculate"
         android:name="com.example.civa.fragment.FragmentCalculate"
-        android:label="FragmenCalculate" />
+        android:label="FragmenCalculate" >
+        <action
+            android:id="@+id/action_fragmenCalculate_to_fragmentInverse"
+            app:destination="@id/fragmentInverse" />
+        <action
+            android:id="@+id/action_fragmenCalculate_to_fragmentAddOrSubtract"
+            app:destination="@id/fragmentAddOrSubtract" />
+        <argument
+            android:name="destination"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_fragmenCalculate_to_fragmentDeterminant"
+            app:destination="@id/fragmentDeterminant" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentHelp"
         android:name="com.example.civa.fragment.FragmentHelp"
         android:label="FragmentHelp" />
+    <fragment
+        android:id="@+id/fragmentInverse"
+        android:name="com.example.civa.fragment.FragmentInverse"
+        android:label="FragmentInverse" >
+        <argument
+            android:name="dimension"
+            app:argType="integer" />
+        <argument
+            android:name="sendingArray"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="comeFromHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentMikavshirebuli"
+        android:name="com.example.civa.fragment.FragmentMikavshirebuli"
+        android:label="FragmentMikavshirebuli" />
+    <fragment
+        android:id="@+id/fragmentHelpHolder"
+        android:name="com.example.civa.fragment.FragmentHelpHolder"
+        android:label="FragmentHelpHolder" />
+    <fragment
+        android:id="@+id/fragmentMultiply"
+        android:name="com.example.civa.fragment.FragmentMultiply"
+        android:label="FragmentMultiply" >
+        <argument
+            android:name="dimensions"
+            app:argType="integer[]" />
+        <argument
+            android:name="firstMatrix"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="secondMatrix"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="comeFromHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentHistory"
+        android:name="com.example.civa.fragment.FragmentHistory"
+        android:label="FragmentHistory" >
+        <action
+            android:id="@+id/action_fragmentHistory_to_fragmentDeterminant"
+            app:destination="@id/fragmentDeterminant"
+            app:popUpTo="@id/fragmentHistory"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_fragmentHistory_to_fragmentAddOrSubtract"
+            app:destination="@id/fragmentAddOrSubtract"
+            app:popUpTo="@id/fragmentHistory"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_fragmentHistory_to_fragmentMultiply"
+            app:destination="@id/fragmentMultiply"
+            app:popUpTo="@id/fragmentHistory"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_fragmentHistory_to_fragmentInverse"
+            app:destination="@id/fragmentInverse"
+            app:popUpTo="@id/fragmentHistory"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/figureDimensionsForTwo"
+        android:name="com.example.civa.fragment.FigureDimensionsForTwo"
+        android:label="FigureDimensionsForTwo" >
+        <action
+            android:id="@+id/action_figureDimensionsForTwo_to_fragmentMultiply"
+            app:destination="@id/fragmentMultiply" />
+        <argument
+            android:name="destination"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAddOrSubtract"
+        android:name="com.example.civa.FragmentAddOrSubtract"
+        android:label="FragmentAddOrSubtract" >
+        <argument
+            android:name="dimension"
+            app:argType="string" />
+        <argument
+            android:name="matrixFirst"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="matrixSecond"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="comeFromHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentHome"
+        android:name="com.example.civa.fragment.FragmentHome"
+        android:label="FragmentHome" >
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentSamatrice"
+            app:destination="@id/fragmentSamatrice" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSamatrice"
+        android:name="com.example.civa.fragment.FragmentSamatrice"
+        android:label="FragmentSamatrice" >
+        <action
+            android:id="@+id/action_fragmentSamatrice_to_fragmenCalculate"
+            app:destination="@id/fragmenCalculate" />
+        <action
+            android:id="@+id/action_fragmentSamatrice_to_figureDimensionsForTwo"
+            app:destination="@id/figureDimensionsForTwo" />
+        <argument
+            android:name="Inverse"
+            app:argType="string"
+            android:defaultValue="Inverse" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentDeterminant"
+        android:name="com.example.civa.fragment.FragmentDeterminant"
+        android:label="FragmentDeterminant" >
+        <argument
+            android:name="dimension"
+            app:argType="integer" />
+        <argument
+            android:name="matrix"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="comeFromHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 </navigation>

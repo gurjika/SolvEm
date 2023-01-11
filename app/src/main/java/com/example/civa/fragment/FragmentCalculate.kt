@@ -6,267 +6,156 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
-
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.civa.MainActivity4
+import androidx.navigation.fragment.findNavController
 import com.example.civa.R
 
 class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
     private lateinit var linearLayout:LinearLayout
     private lateinit var textDimension: TextView
-    private var buttons = Array(6) { arrayOfNulls<Button>(6) }
+    private var buttons = Array(5) { arrayOfNulls<Button>(5) }
     private lateinit var button: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         button = view.findViewById(R.id.button)
         linearLayout = view.findViewById(R.id.linearLayout)
-        buttons = Array(6) { arrayOfNulls(6) }
+        buttons = Array(5) { arrayOfNulls(5) }
         textDimension = view.findViewById(R.id.textView3)
         val gridLayout = GridLayout(activity)
-        gridLayout.rowCount = 6
-        gridLayout.columnCount = 6
-        for (i in 0 until 6) {
-            for (j in 0 until 6) {
+        gridLayout.rowCount = 5
+
+
+
+        gridLayout.columnCount = 5
+        for (i in 0 until 5) {
+            for (j in 0 until 5) {
                 buttons[i][j] = Button(activity)
                 setPos(buttons[i][j], i, j)
                 gridLayout.addView(buttons[i][j])
             }
         }
         linearLayout.addView(gridLayout)
-        configure()
-        var text = ""
+
+
         buttons[0][0]?.background?.setTint(Color.parseColor("#FF9800"))
         buttons[0][1]?.background?.setTint(Color.parseColor("#FF9800"))
         buttons[1][0]?.background?.setTint(Color.parseColor("#FF9800"))
         buttons[1][1]?.background?.setTint(Color.parseColor("#FF9800"))
-        buttons[1][1]?.isEnabled = false
-        button.setOnClickListener {
-            if(buttons[5][5]?.isEnabled == false){
-                text = "6"
+        buttons[0][0]?.isEnabled = false
 
-            }
-            if(buttons[5][5]?.isEnabled == true && buttons[4][4]?.isEnabled == false){
-                text = "5"
+        val destination = FragmentCalculateArgs.fromBundle(requireArguments()).destination
+        val flexibleCalculate = FigureDimensionsForTwo()
+        var sendDimension = 0
+        var sendDimensionAsString = ""
+        if(destination == "DETERMINANT" || destination == "INVERSE") {
+            for (i in 0 until 5) {
+                for (j in 0 until 5) {
+                    val button = buttons[i][j]
+                    button!!.id = i * 5 + j
+                    button.setOnClickListener {
+                        val row = it.id / 5
+                        val column = it.id % 5
+                        toDefault()
 
-            }
-            if(buttons[4][4]?.isEnabled == true && buttons[3][3]?.isEnabled == false){
-                text = "4"
+                        if (row >= column) {
+                            changeColorOff(row)
+                            textDimension.text = "${row + 1} x ${row + 1}"
+                            sendDimension = row + 1
+                        } else {
+                            changeColorOff(column)
+                            textDimension.text = "${column + 1} x ${column + 1}"
+                            sendDimension = column + 1
 
-            }
-            if(buttons[3][3]?.isEnabled == true && buttons[2][2]?.isEnabled == false){
-                text = "3"
-
-            }
-            if(buttons[2][2]?.isEnabled == true && buttons[1][1]?.isEnabled == false){
-                text = "2"
-
-            }
-            val intent = Intent(activity, MainActivity4::class.java)
-            intent.putExtra("N", text)
-            startActivity(intent)
-        }
-    }
-
-    private fun setPos(button: Button?, row: Int, column: Int) {
-        val param = GridLayout.LayoutParams()
-        param.width = 70
-        param.height = 70
-        param.setGravity(Gravity.CENTER)
-        param.rowSpec = GridLayout.spec(row)
-        param.columnSpec = GridLayout.spec(column)
-        button!!.layoutParams = param
-        button.gravity = Gravity.CENTER
-        button.setTextColor(Color.WHITE)
-        button.background.setTint(Color.GRAY)
-
-    }
-
-    private fun turnOff(number: Int) {
-        for (i in 0 until number) {
-            buttons[number - 1][i]?.isEnabled = false
-            buttons[i][number - 1]?.isEnabled = false
-        }
-    }
-
-    private fun turnOn(number: Int) {
-        for (i in 0 until number) {
-            buttons[number - 1][i]?.isEnabled = true
-            buttons[i][number - 1]?.isEnabled = true
-        }
-    }
-    private fun changeColorOff(number: Int){
-        for (i in 0 until number) {
-            buttons[number - 1][i]?.background?.setTint(Color.parseColor("#FF9800"))
-            buttons[i][number - 1]?.background?.setTint(Color.parseColor("#FF9800"))
-        }
-    }
-    private fun changeColorOn(number: Int){
-        for (i in 0 until number) {
-            buttons[number - 1][i]?.background?.setTint(Color.GRAY)
-            buttons[i][number - 1 ]?.background?.setTint(Color.GRAY)
-        }
-    }
-    private fun configure(){
-        for(i in 0..5){
-            buttons[5][i]?.setOnClickListener {
-                turnOff(6)
-                changeColorOff(2)
-                changeColorOff(1)
-                changeColorOff(3)
-                changeColorOff(4)
-                changeColorOff(5)
-                changeColorOff(6)
-                turnOn(3)
-                turnOn(2)
-                turnOn(4)
-                turnOn(5)
-                textDimension.text = "6 x 6"
-            }
-            buttons[i][5]?.setOnClickListener {
-                turnOff(6)
-                turnOn(2)
-                turnOn(3)
-                turnOn(4)
-                turnOn(5)
-                changeColorOff(2)
-                changeColorOff(1)
-                changeColorOff(3)
-                changeColorOff(4)
-                changeColorOff(5)
-                changeColorOff(6)
-                textDimension.text = "6 x 6"
+                        }
+                    }
+                }
             }
         }
-        for(i in 0..4){
-            buttons[4][i]?.setOnClickListener {
-                turnOn(6)
-                turnOn(4)
-                turnOn(3)
-                turnOn(2)
-                changeColorOn(6)
-                turnOff(5)
-                changeColorOff(3)
-                changeColorOff(4)
-                changeColorOff(5)
-                changeColorOff(2)
-                changeColorOff(1)
-                textDimension.text = "5 x 5"
-            }
-            buttons[i][4]?.setOnClickListener {
-                turnOff(5)
-                turnOn(6)
-                turnOn(4)
-                turnOn(3)
-                turnOn(2)
-                changeColorOn(6)
-                changeColorOff(3)
-                changeColorOff(4)
-                changeColorOff(5)
-                changeColorOff(2)
-                changeColorOff(1)
-                textDimension.text = "5 x 5"
-            }
-        }
-        for(i in 0.. 3){
-            buttons[i][3]?.setOnClickListener {
-                turnOn(2)
-                turnOn(3)
-                turnOn(5)
-                turnOn(6)
-                changeColorOn(5)
-                changeColorOn(6)
-                turnOff(4)
-                changeColorOff(3)
-                changeColorOff(4)
-                changeColorOff(2)
-                changeColorOff(1)
-                textDimension.text = "4 x 4"
-            }
-            buttons[3][i]?.setOnClickListener {
-                turnOn(2)
-                turnOn(3)
-                turnOn(5)
-                turnOn(6)
-                changeColorOn(5)
-                changeColorOn(6)
-                turnOff(4)
-                changeColorOff(3)
-                changeColorOff(4)
-                changeColorOff(2)
-                changeColorOff(1)
-                textDimension.text = "4 x 4"
-            }
+        else {
 
-        }
-        for(i in 0..2){
-            buttons[i][2]?.setOnClickListener{
-                turnOn(2)
-                turnOn(4)
-                turnOn(5)
-                turnOn(6)
-                turnOff(3)
-                changeColorOn(4)
-                changeColorOn(5)
-                changeColorOn(6)
-                changeColorOff(3)
-                changeColorOff(2)
-                changeColorOff(1)
-                textDimension.text = "3 x 3"
-            }
-            buttons[2][i]?.setOnClickListener{
-                turnOn(2)
-                turnOn(4)
-                turnOn(5)
-                turnOn(6)
-                turnOff(3)
-                changeColorOn(4)
-                changeColorOn(5)
-                changeColorOn(6)
-                changeColorOff(3)
-                changeColorOff(2)
-                changeColorOff(1)
-                textDimension.text = "3 x 3"
+            for (i in 0 until 5) {
+                for (j in 0 until 5) {
+                    val button = buttons[i][j]
+                    button!!.id = i * 5 + j
+                    button.setOnClickListener {
+                        val rowOne = it.id / 5
+                        val columnOne = it.id % 5
+                        flexibleCalculate.toDefault(buttons)
+                        flexibleCalculate.changeColorOffColumn(rowOne, columnOne, buttons)
+                        textDimension.text = "${rowOne + 1} x ${columnOne + 1}"
+                        sendDimensionAsString = "${rowOne + 1}${columnOne + 1}"
+
+                    }
+                }
             }
         }
-        for(i in 0..1){
-            buttons[1][i]?.setOnClickListener {
-                changeColorOn(2)
-                changeColorOn(3)
-                changeColorOn(4)
-                changeColorOn(5)
-                changeColorOn(6)
-                changeColorOff(2)
-                changeColorOff(1)
-                turnOff(2)
-                turnOn(3)
-                turnOn(4)
-                turnOn(5)
-                turnOn(6)
-                textDimension.text = "2 x 2"
+            button.setOnClickListener {
+                val destination = FragmentCalculateArgs.fromBundle(requireArguments()).destination
+
+                if(destination == "INVERSE"){
+                    val action = FragmentCalculateDirections
+                        .actionFragmenCalculateToFragmentInverse(sendDimension)
+                    findNavController().navigate(action)
+                }
+                else if(destination == "DETERMINANT"){
+                    val action = FragmentCalculateDirections
+                        .actionFragmenCalculateToFragmentDeterminant(sendDimension, null, false)
+                    findNavController().navigate(action)
+                }
+                else if(destination == "T"){
+
+                }
+                else if(destination == "ADD"){
+                    val action = FragmentCalculateDirections
+                        .actionFragmenCalculateToFragmentAddOrSubtract("$sendDimensionAsString+", null, null,false)
+                    findNavController().navigate(action)
+                }
+                else if(destination == "SUBTRACT"){
+
+
+                    val action = FragmentCalculateDirections
+                        .actionFragmenCalculateToFragmentAddOrSubtract(
+                            "$sendDimensionAsString-", null, null, false)
+
+                    findNavController().navigate(action)
+                }
             }
-            buttons[i][1]?.setOnClickListener {
-                changeColorOn(2)
-                changeColorOn(3)
-                changeColorOn(4)
-                changeColorOn(5)
-                changeColorOn(6)
-                changeColorOff(2)
-                changeColorOff(1)
-                turnOff(2)
-                turnOn(3)
-                turnOn(4)
-                turnOn(5)
-                turnOn(6)
-                textDimension.text = "2 x 2"
+        }
+
+        fun setPos(button: Button?, row: Int, column: Int) {
+            val param = GridLayout.LayoutParams()
+            param.width = 70
+            param.height = 70
+            param.setGravity(Gravity.CENTER)
+            param.rowSpec = GridLayout.spec(row)
+            param.columnSpec = GridLayout.spec(column)
+            button!!.layoutParams = param
+            button.gravity = Gravity.CENTER
+            button.setTextColor(Color.WHITE)
+            button.background.setTint(Color.GRAY)
+        }
+
+
+    private fun changeColorOff(size:Int){
+        for(i in 0 .. size) {
+            for (j in 0 .. size) {
+                buttons[i][j]?.background?.setTint(Color.parseColor("#FF9800"))
             }
         }
     }
-
+        private fun toDefault(){
+            for(i in 0 until 5){
+                for(j in 0 until 5){
+                    buttons[i][j]!!.background.setTint(Color.GRAY)
+                }
+            }
+        }
 }
+
 
 
 

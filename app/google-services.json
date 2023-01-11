@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "180294128219",
+    "project_id": "camera-7760f",
+    "storage_bucket": "camera-7760f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180294128219:android:7a78bbc2d51af90b3ca57e",
+        "android_client_info": {
+          "package_name": "com.example.civa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180294128219-ehmi3tjgjmhv4asctl70pq8umfsodom1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi64vJgUROHLlc4O8_ldU2-Pw2aJ2wSUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180294128219-ehmi3tjgjmhv4asctl70pq8umfsodom1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

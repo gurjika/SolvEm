@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#252323">
+
+    <LinearLayout
+        android:id="@+id/es_linearAddOrSubtractFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ln_border"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/es_linearAddOrSubtractSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/ln_border"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/es_linearAddOrSubtractFirst">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewAddOrSubtractOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textColor="@color/orange"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/es_linearAddOrSubtractSecond"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/es_linearAddOrSubtractFirst" />
+
+    <Button
+        android:id="@+id/buttonAddOrSubtractCalculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="calculate"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonAddOrSubtractClear"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddOrSubtractClear"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonAddOrSubtractClear" />
+
+    <Button
+        android:id="@+id/buttonAddOrSubtractSeeHow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="see how"
+
+        app:layout_constraintBottom_toBottomOf="@+id/buttonAddOrSubtractClear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddOrSubtractClear"
+        app:layout_constraintTop_toTopOf="@+id/buttonAddOrSubtractClear" />
+
+    <Button
+        android:id="@+id/buttonAddOrSubtractClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="clear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddOrSubtractSeeHow"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddOrSubtractCalculate" />
+
+    <LinearLayout
+        android:id="@+id/es_linearAddOrSubtractResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/es_linearAddOrSubtractSecond"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/ln_border"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/es_linearAddOrSubtractFirst">
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

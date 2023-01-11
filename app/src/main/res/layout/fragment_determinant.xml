@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity4"
     android:background="#252323">
 
     <LinearLayout
         android:id="@+id/es_linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="50dp"
+        android:background="@drawable/ln_border"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/ln_border"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -31,48 +30,80 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-      />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FF9800"
+        android:backgroundTint="@color/button_back"
         android:text="CALCULATE"
-        android:layout_marginStart="70dp"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonClear"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:visibility="invisible"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:scaleY="4"
-        android:progressTint="#FF9800"
+        android:layout_marginTop="30dp"
         android:progressBackgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:progressTint="#FF9800"
+        android:scaleY="4"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CLEAR"
         android:progressBackgroundTint="@color/white"
         android:progressTint="#FF9800"
-        android:textStyle="bold"
+        android:text="Clear"
         android:textSize="15sp"
-        android:layout_marginEnd="70dp"
+        app:shapeAppearanceOverlay="@style/rounded"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
+    <LinearLayout
+        android:id="@+id/resultLinear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/recyclerViewDeterminant"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/seeHowButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See how"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

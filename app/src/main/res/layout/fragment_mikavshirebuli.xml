@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#252323"
+    tools:context=".MainActivity4">
+
+    <LinearLayout
+        android:id="@+id/es_linearMikavshirebuli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/ln_border"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/textViewMikavshirebuli"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewMikavshirebuli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="100dp"
+        android:text="RESULT: "
+        android:textColor="@color/white"
+        android:textSize="20sp"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultLinearMikavshirebuli" />
+
+    <Button
+        android:id="@+id/buttonCalculateMikavshirebuli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF9800"
+        android:text="CALCULATE"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonClearMikavshirebuli"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seeHowButtonMikavshirebuli" />
+
+
+    <Button
+        android:id="@+id/buttonClearMikavshirebuli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressBackgroundTint="@color/white"
+        android:progressTint="#FF9800"
+        android:text="CLEAR"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateMikavshirebuli"
+        app:layout_constraintTop_toBottomOf="@+id/seeHowButtonMikavshirebuli" />
+
+    <LinearLayout
+        android:id="@+id/resultLinearMikavshirebuli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewDeterminantMikavshirebuli"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/seeHowButtonMikavshirebuli"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/seeHowButtonMikavshirebuli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See how"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMikavshirebuli" />
+
+    <LinearLayout
+        android:id="@+id/linearResultMikavshirebuli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ln_border"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/seeHowButtonMikavshirebuli"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewMikavshirebuli"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDeterminantMikavshirebuli">
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

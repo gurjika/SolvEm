@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/buttonGoToDeterminant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Determinant" />
+
+        <Button
+            android:id="@+id/buttonGoToMultiply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Multiply" />
+
+        <Button
+            android:id="@+id/buttonGoToInverse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inverse" />
+
+        <Button
+            android:id="@+id/buttonGoToFindX"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Find x" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/buttonGoToAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add" />
+
+        <Button
+            android:id="@+id/buttonGoToSubtract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subtract" />
+
+        <Button
+            android:id="@+id/buttonGoToT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
