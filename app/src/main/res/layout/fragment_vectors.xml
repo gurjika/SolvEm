@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/buttonGoToCross"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ვექტორული" />
+
+        <Button
+            android:id="@+id/buttonGoToDot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="სკალარული" />
+
+        <Button
+            android:id="@+id/buttonGoToM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="შერეული" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/buttonGoToCos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="კოსინუსი" />
+
+        <Button
+            android:id="@+id/buttonGoToSin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="სინუსი" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,38 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#252323"
-    tools:context=".MainActivity4">
+    >
 
     <LinearLayout
-        android:id="@+id/es_linearMikavshirebuli"
+        android:id="@+id/es_linearFindX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/ln_border"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/textViewMikavshirebuli"
+        app:layout_constraintBottom_toTopOf="@+id/es_linearFindX1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewMikavshirebuli"
+        android:id="@+id/resultTextFindX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="300dp"
         android:layout_marginEnd="100dp"
         android:text="RESULT: "
         android:textColor="@color/white"
         android:textSize="20sp"
-
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultLinearMikavshirebuli" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonCalculateMikavshirebuli"
+        android:id="@+id/buttonCalculateFindX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#FF9800"
@@ -45,16 +44,17 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonClearMikavshirebuli"
+        app:layout_constraintEnd_toStartOf="@+id/buttonClearFindX"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seeHowButtonMikavshirebuli" />
+        app:layout_constraintTop_toBottomOf="@+id/resultTextFindX" />
 
 
     <Button
-        android:id="@+id/buttonClearMikavshirebuli"
+        android:id="@+id/buttonClearFindX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:progressBackgroundTint="@color/white"
         android:progressTint="#FF9800"
         android:text="CLEAR"
@@ -63,14 +63,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonCalculateMikavshirebuli"
-        app:layout_constraintTop_toBottomOf="@+id/seeHowButtonMikavshirebuli" />
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateFindX"
+        app:layout_constraintTop_toBottomOf="@+id/resultTextFindX" />
 
     <LinearLayout
-        android:id="@+id/resultLinearMikavshirebuli"
+        android:id="@+id/es_linearFindX1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/ln_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,37 +79,27 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewDeterminantMikavshirebuli"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="150dp"
-        app:layout_constraintBottom_toTopOf="@+id/seeHowButtonMikavshirebuli"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
-        android:id="@+id/seeHowButtonMikavshirebuli"
+        android:id="@+id/seeHowButtonFIndX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="See how"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMikavshirebuli" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonCalculateFindX" />
 
     <LinearLayout
-        android:id="@+id/linearResultMikavshirebuli"
+        android:id="@+id/linearFindXResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ln_border"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/seeHowButtonMikavshirebuli"
+        android:background="@drawable/ln_border"
+        app:layout_constraintBottom_toTopOf="@+id/buttonClearFindX"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewMikavshirebuli"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDeterminantMikavshirebuli">
+        app:layout_constraintStart_toEndOf="@+id/resultTextFindX"
+        app:layout_constraintTop_toBottomOf="@+id/es_linearFindX1">
 
     </LinearLayout>
 

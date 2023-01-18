@@ -17,6 +17,7 @@ class FigureDimensionsForTwo:Fragment(R.layout.fragment_figure_dimensions_for_tw
     private lateinit var textDimensionShowTwo: TextView
     private var buttonsOne = Array(5) { arrayOfNulls<Button>(5) }
     private var buttonsTwo = Array(5) { arrayOfNulls<Button>(5) }
+    private var destination = ""
 
     private lateinit var buttonEnter:Button
 
@@ -31,7 +32,7 @@ class FigureDimensionsForTwo:Fragment(R.layout.fragment_figure_dimensions_for_tw
         textDimension = view.findViewById(R.id.textViewDimensionsForTwoOperation)
         textDimensionShowOne = view.findViewById(R.id.textViewDimensionShowOne)
         textDimensionShowTwo = view.findViewById(R.id.textViewDimensionShowTwo)
-
+        destination = FigureDimensionsForTwoArgs.fromBundle(requireArguments()).destination
         val gridLayoutOne = GridLayout(activity)
         gridLayoutOne.rowCount = 5
         val setPos = FragmentCalculate()
@@ -94,18 +95,66 @@ class FigureDimensionsForTwo:Fragment(R.layout.fragment_figure_dimensions_for_tw
             }
         }
         buttonEnter.setOnClickListener {
+            if(destination == "MULTIPLY") {
+                if (columnOne == rowTwo) {
+                    val dimensions =
+                        intArrayOf(columnOne + 1, rowOne + 1, columnTwo + 1, rowTwo + 1)
 
-            if(columnOne==rowTwo) {
-               val dimensions = intArrayOf(rowOne + 1,columnOne + 1,rowTwo + 1,columnTwo + 1)
-
-                val action = FigureDimensionsForTwoDirections
-                    .actionFigureDimensionsForTwoToFragmentMultiply(dimensions)
-                findNavController().navigate(action)
+                    val action = FigureDimensionsForTwoDirections
+                        .actionFigureDimensionsForTwoToFragmentMultiply(dimensions)
+                    findNavController().navigate(action)
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Dimensions are not correct",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-            else{
-                Toast.makeText(requireActivity(), "Dimensions are not correct", Toast.LENGTH_SHORT).show()
+            else {
+                if (rowOne == columnOne) {
+                    val criteriaForFindX = FigureDimensionsForTwoArgs
+                        .fromBundle(requireArguments()).criteriaForFindX
+                    if (criteriaForFindX == "<") {
+                        if (columnOne == rowTwo) {
+                            val dimensions =
+                                intArrayOf(columnOne + 1, rowOne + 1, columnTwo + 1, rowTwo + 1)
+                            val action = FigureDimensionsForTwoDirections
+                                .actionFigureDimensionsForTwoToFragmentFindX(
+                                    dimensions,
+                                    criteriaForFindX
+                                )
+                            findNavController().navigate(action)
+                        } else {
+                            Toast.makeText(
+                                requireActivity(),
+                                "Dimensions are not correct 1",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        if (columnTwo == rowOne) {
+                            val dimensions =
+                                intArrayOf(columnOne + 1, rowOne + 1, columnTwo + 1, rowTwo + 1)
+                            val action = FigureDimensionsForTwoDirections
+                                .actionFigureDimensionsForTwoToFragmentFindX(
+                                    dimensions,
+                                    criteriaForFindX
+                                )
+                            findNavController().navigate(action)
+                        } else {
+                            Toast.makeText(
+                                requireActivity(),
+                                "Dimensions are not correct 2",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(requireActivity(), "Dimensions are not correct 3", Toast.LENGTH_SHORT).show()
+                }
             }
-
         }
     }
     fun toDefault(buttons: Array<Array<Button?>>){

@@ -50,7 +50,11 @@ class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
         val destination = FragmentCalculateArgs.fromBundle(requireArguments()).destination
         val flexibleCalculate = FigureDimensionsForTwo()
         var sendDimension = 0
-        var sendDimensionAsString = ""
+        var sendDimensionAsString = "22"
+
+        textDimension.text = "2 x 2"
+        sendDimension = 2
+
         if(destination == "DETERMINANT" || destination == "INVERSE") {
             for (i in 0 until 5) {
                 for (j in 0 until 5) {
@@ -60,7 +64,6 @@ class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
                         val row = it.id / 5
                         val column = it.id % 5
                         toDefault()
-
                         if (row >= column) {
                             changeColorOff(row)
                             textDimension.text = "${row + 1} x ${row + 1}"
@@ -69,21 +72,24 @@ class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
                             changeColorOff(column)
                             textDimension.text = "${column + 1} x ${column + 1}"
                             sendDimension = column + 1
-
                         }
                     }
                 }
             }
+
         }
         else {
+            var rowOne = 1
+            var columnOne = 1
+            textDimension.text = "${rowOne + 1} x ${columnOne + 1}"
 
             for (i in 0 until 5) {
                 for (j in 0 until 5) {
                     val button = buttons[i][j]
                     button!!.id = i * 5 + j
                     button.setOnClickListener {
-                        val rowOne = it.id / 5
-                        val columnOne = it.id % 5
+                        rowOne = it.id / 5
+                        columnOne = it.id % 5
                         flexibleCalculate.toDefault(buttons)
                         flexibleCalculate.changeColorOffColumn(rowOne, columnOne, buttons)
                         textDimension.text = "${rowOne + 1} x ${columnOne + 1}"
@@ -92,6 +98,9 @@ class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
                     }
                 }
             }
+
+
+
         }
             button.setOnClickListener {
                 val destination = FragmentCalculateArgs.fromBundle(requireArguments()).destination
@@ -106,8 +115,10 @@ class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
                         .actionFragmenCalculateToFragmentDeterminant(sendDimension, null, false)
                     findNavController().navigate(action)
                 }
-                else if(destination == "T"){
-
+                else if(destination == "TRANSP"){
+                    val action = FragmentCalculateDirections
+                        .actionFragmenCalculateToFragmentTransp(sendDimensionAsString, null, false)
+                    findNavController().navigate(action)
                 }
                 else if(destination == "ADD"){
                     val action = FragmentCalculateDirections

@@ -38,47 +38,38 @@ class FragmentMultiply:Fragment(R.layout.fragment_multiply) {
         esLinear1 = view.findViewById(R.id.es_linearMultiply1)
 
         val dimensions = FragmentMultiplyArgs.fromBundle(requireArguments()).dimensions
-        val rowOne = dimensions[0]
-        val columnOne = dimensions[1]
-        val rowTwo = dimensions[2]
-        val columnTwo = dimensions[3]
+        val rowOne = dimensions[1]
+        val columnOne = dimensions[0]
+        val rowTwo = dimensions[3]
+        val columnTwo = dimensions[2]
+        val builder = BuilderTool()
 
 
-
+        comeFromHistory = FragmentMultiplyArgs.fromBundle(requireArguments()).comeFromHistory
 
         val editTexts1 = Array(rowOne) { arrayOfNulls<EditText>(columnOne) }
         val editTexts2 = Array(rowTwo) { arrayOfNulls<EditText>(columnTwo) }
         val textViews = Array(rowOne) { arrayOfNulls<TextView>(columnTwo) }
 
-
+        val setPos = MakeGridLayout()
         array = Array(rowOne) { DoubleArray(columnOne) }
         array1 = Array(rowTwo) { DoubleArray(columnTwo) }
 
-        val gridLayout1 = GridLayout(requireActivity())
-
-        gridLayout1.rowCount = rowOne
-        gridLayout1.columnCount = columnOne
-        val setPos = MakeGridLayout()
-        for (i in 0 until rowOne) {
-            for (j in 0 until columnOne) {
-                editTexts1[i][j] = EditText(activity)
-                setPos.setPosForEditText(editTexts1[i][j], i, j, 100)
-                gridLayout1.addView(editTexts1[i][j])
-            }
-        }
-
+        val gridLayout1 = builder.buildGrid(
+            requireActivity(),
+            editTexts1,
+            rowOne,
+            columnOne
+        )
         esLinear.addView(gridLayout1)
-        val gridLayout2 = GridLayout(requireActivity())
-        gridLayout2.rowCount = rowTwo
-        gridLayout2.columnCount = columnTwo
+        val gridLayout2 = builder.buildGrid(
+            requireActivity(),
+            editTexts2,
+            rowTwo,
+            columnTwo
+        )
 
-        for (i in 0 until rowTwo) {
-            for (j in 0 until columnTwo) {
-                editTexts2[i][j] = EditText(activity)
-                setPos.setPosForEditText(editTexts2[i][j], i, j, 100)
-                gridLayout2.addView(editTexts2[i][j])
-            }
-        }
+        esLinear1.addView(gridLayout2)
 
         if(comeFromHistory){
             var index = 0
@@ -93,13 +84,13 @@ class FragmentMultiply:Fragment(R.layout.fragment_multiply) {
             var indexTwo = 0
             for(i in 0 until rowTwo){
                 for(j in 0 until columnTwo){
-                    editTexts1[i][j]!!.append(receivedMatrixTwo!![indexTwo])
+                    editTexts2[i][j]!!.append(receivedMatrixTwo!![indexTwo])
                     indexTwo++
                 }
             }
         }
 
-        esLinear1.addView(gridLayout2)
+
 
         database = FirebaseDatabase.getInstance().getReference("Users")
         sharedPreferences = this.requireActivity().getSharedPreferences(
@@ -142,29 +133,14 @@ class FragmentMultiply:Fragment(R.layout.fragment_multiply) {
             resultStringOne = "$resultStringOne$rowOne;$columnOne;x;MULTIPLY"
             resultStringTwo =  "$resultStringTwo$rowTwo;$columnTwo;MULTIPLY"
 
-
-            val valueEventListener = object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val currentValue = dataSnapshot.child("0").value.toString().toInt()
-                    val updatedValue = currentValue + 1
-                    database.child("email").child("0").setValue(currentValue + 2)
-                    database.child("email").child(updatedValue.toString()).setValue(resultStringOne)
-                    database.child("email").child((updatedValue + 1).toString())
-                        .setValue(resultStringTwo)
-                    sharedPreferences.edit()
-                        .putString(updatedValue.toString(), resultStringOne)
-                        .putString((updatedValue + 1).toString(), resultStringTwo)
-                        .apply()
-
-                    Toast.makeText(requireActivity(), "added", Toast.LENGTH_SHORT).show()
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Toast.makeText(requireActivity(), "noooooooo", Toast.LENGTH_SHORT).show()
-                }
+            if(!comeFromHistory){
+                builder.uploadMatrix(
+                    requireActivity(),
+                    database,
+                    sharedPreferences,
+                    resultStringOne,
+                    resultStringTwo)
             }
-            database.child("email").addListenerForSingleValueEvent(valueEventListener)
-
 
 
 

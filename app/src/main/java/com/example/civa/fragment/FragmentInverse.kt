@@ -2,21 +2,16 @@ package com.example.civa.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.civa.*
 import com.example.civa.R
 import com.google.firebase.database.*
-import com.zanvent.mathview.MathView
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -43,8 +38,6 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
     private var resultStringSet = linkedSetOf<String>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var seeHowButton: Button
-
-
     private var tablelist = mutableListOf<Table>()
     private var toAddInTableList = mutableListOf<GridLayout>()
     private var array = Array(4) { DoubleArray(4) }
@@ -72,6 +65,7 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
         val textViews = Array(numberOfRows) { arrayOfNulls<TextView>(numberOfColumns) }
         val gridLayout = GridLayout(activity)
         val setPos = MakeGridLayout()
+        val builder = BuilderTool()
         array = Array(n) { DoubleArray(n) }
         comeFromHistory = FragmentInverseArgs.fromBundle(requireArguments()).comeFromHistory
         gridLayout.rowCount = numberOfRows
@@ -106,53 +100,30 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
         var toAdd = ""
 
         buttonCalculate.setOnClickListener {
-            for (i in 0 until n) {
-                for (j in 0 until n) {
-                    if (checkEditText.validateEm(editTexts, n, n)) {
+            if (checkEditText.validateEm(editTexts, n, n)) {
+                for (i in 0 until n) {
+                    for (j in 0 until n) {
                         array[i][j] = editTexts[i][j]?.text.toString().toDouble()
                         resultString = resultString + array[i][j].toString() + ";"
-                    } else {
-                        resultStringSet.clear()
-                        resultString = ""
-                        return@setOnClickListener
                     }
                 }
-
             }
-
+            else{
+                return@setOnClickListener
+            }
             resultString = "$resultString$n;$n;INVERSE"
 
             database = FirebaseDatabase.getInstance().getReference("Users")
             sharedPreferences = this.requireActivity().getSharedPreferences("MY_PREFS", MODE_PRIVATE)
 
-            var counter = 0
 
-            if(!comeFromHistory) {
-                val valueEventListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val currentValue = dataSnapshot.child("0").value.toString().toInt()
-                        val updatedValue = currentValue + 1
-                        database.child("email").child("0").setValue(currentValue + 1)
-                        database.child("email").child(updatedValue.toString())
-                            .setValue(resultString)
-
-                        sharedPreferences.edit()
-                            .putString(updatedValue.toString(), resultString)
-                            .apply()
-                        Toast.makeText(requireActivity(), "added", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Toast.makeText(requireActivity(), "noooooooo", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                database.child("email").addListenerForSingleValueEvent(valueEventListener)
-            }
 
 
 
 
             calculate()
+
+            builder.uploadMatrix(requireActivity(), database, sharedPreferences, resultString, null)
 
             var index = 0
             val checker = ReduceFraction()
@@ -160,7 +131,6 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
 
             for (i in 0 until numberOfRows) {
                 for (j in 0 until numberOfColumns) {
-
 
                     textViews[i][j] = TextView(requireActivity())
                     setPos.setPosForText(textViews[i][j], i, j, 100)
@@ -177,6 +147,9 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
                     }
                     else{
                         textViews[i][j]!!.text = checker.asFraction(sumArray[index].toInt(), determinant.toInt())
+                        if(textViews[i][j]!!.text.toString().endsWith("/1")){
+                            textViews[i][j]!!.text.toString().dropLast(2)
+                        }
                     }
                     gridLayoutForResult.addView(textViews[i][j])
                     index++
@@ -212,5 +185,4 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
     }
-
 }

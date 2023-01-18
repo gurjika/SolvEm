@@ -19,7 +19,6 @@ class MakeGridLayout {
         param.rowSpec = GridLayout.spec(row)
         editText!!.layoutParams = param
         editText.gravity = Gravity.CENTER
-        editText.setTextColor(Color.WHITE)
         editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
         editText.setTextColor(Color.BLACK)
     }

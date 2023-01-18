@@ -9,11 +9,11 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tableLayout" />
+        android:id="@+id/tableLayoutHistory1" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
-        android:id="@+id/viewPager"
+        android:id="@+id/viewPagerHistory1"
         android:layout_height="match_parent"/>
 
 </LinearLayout>

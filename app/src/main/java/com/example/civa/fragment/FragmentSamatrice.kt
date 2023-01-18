@@ -42,12 +42,23 @@ class FragmentSamatrice:Fragment(R.layout.fragment_samatrice) {
             findNavController().navigate(action)
         }
         toMultiply.setOnClickListener {
-            val action = FragmentSamatriceDirections.actionFragmentSamatriceToFigureDimensionsForTwo("MULTIPLY")
+            val action = FragmentSamatriceDirections
+                .actionFragmentSamatriceToFigureDimensionsForTwo("MULTIPLY", "")
             findNavController().navigate(action)
         }
         toDeterminant.setOnClickListener {
              val action = FragmentSamatriceDirections
                  .actionFragmentSamatriceToFragmenCalculate("DETERMINANT")
+            findNavController().navigate(action)
+        }
+        toTransp.setOnClickListener {
+            val action = FragmentSamatriceDirections
+                .actionFragmentSamatriceToFragmenCalculate("TRANSP")
+            findNavController().navigate(action)
+        }
+        toFindX.setOnClickListener {
+            val action = FragmentSamatriceDirections
+                .actionFragmentSamatriceToFragmentOrOr()
             findNavController().navigate(action)
         }
     }

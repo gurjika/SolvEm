@@ -22,12 +22,19 @@ class TableAdapter(
     }
 
     override fun onBindViewHolder(holder: TableViewHolder, position: Int) {
+
         if(tables[position].matrix.parent != null){
             (tables[position].matrix.parent as ViewGroup).removeView(tables[position].matrix)
+
         }
 
 
+
+
+
         holder.itemView.findViewById<LinearLayout>(R.id.lineari).addView(tables[position].matrix)
+
+
         holder.itemView.findViewById<TextView>(R.id.textView8).text = tables[position].sums
         if(tables[position].parentNumber.isNotEmpty()){
         holder.itemView.findViewById<TextView>(R.id.textView5).text = tables[position].parentNumber + "  *  "

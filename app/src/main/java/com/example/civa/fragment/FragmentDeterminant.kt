@@ -11,9 +11,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.civa.*
 import com.example.civa.R
-import com.example.civa.Table
-import com.example.civa.TableAdapter
 import com.google.firebase.database.*
 
 class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
@@ -50,7 +49,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
         buttonCalculateDeterminant = view.findViewById(R.id.button2)
         linear = view.findViewById(R.id.es_linear)
         resultLinearLayout = view.findViewById(R.id.resultLinear)
-
+        val checkEditText = ValidateEditTexts()
         n = FragmentDeterminantArgs.fromBundle(requireArguments()).dimension
 
         comeFromHistory = FragmentDeterminantArgs.fromBundle(requireArguments()).comeFromHistory
@@ -60,17 +59,16 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
         numberOfColumns = n
         array = Array(n) { DoubleArray(n) }
         saveArray = Array(n) { DoubleArray(n) }
+
+
         val editTexts = Array(numberOfRows) { arrayOfNulls<EditText>(numberOfColumns) }
-        val gridLayout = GridLayout(requireActivity())
-        gridLayout.rowCount = numberOfRows
-        gridLayout.columnCount = numberOfColumns
-        for (i in 0 until numberOfRows) {
-            for (j in 0 until numberOfColumns) {
-                editTexts[i][j] = EditText(requireActivity())
-                setPos(editTexts[i][j], i, j)
-                gridLayout.addView(editTexts[i][j])
-            }
-        }
+        val builder = BuilderTool()
+
+        val gridLayout = builder.buildGrid(
+            requireActivity(),
+            editTexts,
+            numberOfRows,
+            numberOfColumns)
         linear.addView(gridLayout)
 
 
@@ -97,26 +95,16 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             result.visibility = View.INVISIBLE
         }
         buttonCalculateDeterminant.setOnClickListener {
-            for (i in 0 until n) {
-                for (j in 0 until n) {
-                    if (editTexts[i][j]?.text!!.isEmpty()) {
-                        editTexts[i][j]?.error = "Incorrect number"
-                        return@setOnClickListener
+            if (checkEditText.validateEm(editTexts, n, n)) {
+                for (i in 0 until n) {
+                    for (j in 0 until n) {
+                        array[i][j] = editTexts[i][j]?.text.toString().toDouble()
+                        resultString = resultString + array[i][j].toString() + ";"
                     }
-                    if (editTexts[i][j]!!.text.toString() == "-") {
-                        editTexts[i][j]?.error = "Incorrect number"
-                        return@setOnClickListener
-                    }
-                    if (editTexts[i][j]!!.text.toString() == "." ||
-                        editTexts[i][j]!!.text.toString() == ".0"
-                    ) {
-                        editTexts[i][j]?.error = "Incorrect number"
-                        return@setOnClickListener
-                    }
-                    array[i][j] = editTexts[i][j]?.text.toString().toDouble()
-                    resultString = resultString + array[i][j].toString() + ";"
-
                 }
+            }
+            else{
+                return@setOnClickListener
             }
             sumArray.add("")
             parentArray.add("")
@@ -136,24 +124,12 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             )
 
             if (!comeFromHistory) {
-                val valueEventListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val currentValue = dataSnapshot.child("0").value.toString().toInt()
-                        val updatedValue = currentValue + 1
-                        database.child("email").child("0").setValue(currentValue + 1)
-                        database.child("email").child(updatedValue.toString())
-                            .setValue(resultString)
-
-                        sharedPreferences.edit()
-                            .putString(updatedValue.toString(), resultString)
-                            .apply()
-                        Toast.makeText(requireActivity(), "added", Toast.LENGTH_SHORT).show()
-                    }
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Toast.makeText(requireActivity(), "noooooooo", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                database.child("email").addListenerForSingleValueEvent(valueEventListener)
+                builder.uploadMatrix(
+                    requireActivity(),
+                    database,
+                    sharedPreferences,
+                    resultString,
+                    null)
             }
         }
         buttonClear.setOnClickListener {
@@ -183,20 +159,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
 
 
 
-    private fun setPos(editText: EditText?, row: Int, column: Int) {
-        val param = GridLayout.LayoutParams()
-        param.width = 100
-        param.height = 100
-        param.setGravity(Gravity.CENTER)
-        param.columnSpec = GridLayout.spec(column)
-        param.rowSpec = GridLayout.spec(row)
 
-        editText!!.layoutParams = param
-        editText.gravity = Gravity.CENTER
-        editText.setTextColor(Color.WHITE)
-        editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
-        editText.setTextColor(Color.BLACK)
-    }
     private fun aba() {
         result.text = "RESULT: "
 
@@ -255,7 +218,6 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             }
         }
 
-
         val temporary:MutableList<Double> = mutableListOf()
         var e = 0
 
@@ -274,6 +236,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
                 }
                 if(needed == 0){
                     temporary.add(array[i][m])
+
                 }
                 else{
                     temporary.add(Array[i][m])
@@ -299,6 +262,9 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             sum
         }
     }
+
+
+
     private fun display(Array: Array<DoubleArray>){
         val dimension = Array.size
         val tableLayout = GridLayout(requireActivity())
@@ -307,11 +273,11 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
         tableLayout.columnCount = dimension
 
         val textViews = Array(dimension) { arrayOfNulls<TextView>(dimension)}
-
+        val setPos = MakeGridLayout()
         for (i in 0 until dimension) {
             for (j in 0 until dimension) {
                 textViews[i][j] = TextView(requireActivity())
-                setPos1(textViews[i][j], i, j)
+                setPos.setPosForText(textViews[i][j], i, j, 70)
                 tableLayout.addView(textViews[i][j])
                 if(Array[i][j].toString().contains(".0")){
                     Array[i][j].toString().dropLast(2)
@@ -321,17 +287,6 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
         }
         toAddInTableList.add(tableLayout)
 
-    }
-    private fun setPos1(textView: TextView?, row: Int, column: Int) {
-        val param = GridLayout.LayoutParams()
-        param.width = 65
-        param.height = 65
-        param.setGravity(Gravity.CENTER)
-        param.columnSpec = GridLayout.spec(column)
-        param.rowSpec = GridLayout.spec(row)
-        textView!!.layoutParams = param
-        textView.gravity = Gravity.CENTER
-        textView.setTextColor(Color.BLACK)
     }
     private fun turnOnRecycler(){
         for(j in 0..counter - sumArray.size){

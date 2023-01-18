@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/es_linearVectorEasier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ln_border"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/es_linearVectorEasierTwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <LinearLayout
+        android:id="@+id/es_linearVectorEasierTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/es_linearVectorEasier" />
+
+    <Button
+        android:id="@+id/buttonCalculateVectorEasier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="="
+        android:backgroundTint="@color/button_back"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonClearVectorEasier"
+        app:layout_constraintEnd_toStartOf="@+id/buttonClearVectorEasier"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonClearVectorEasier" />
+
+    <Button
+        android:id="@+id/buttonClearVectorEasier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:backgroundTint="@color/button_back"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonSeeHowVectorEasier"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSeeHowVectorEasier"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateVectorEasier"
+        app:layout_constraintTop_toTopOf="@+id/buttonSeeHowVectorEasier" />
+
+    <Button
+        android:id="@+id/buttonSeeHowVectorEasier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See how"
+        android:backgroundTint="@color/button_back"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonMoreVectorEasier"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonClearVectorEasier" />
+
+    <Button
+        android:id="@+id/buttonMoreVectorEasier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More"
+        android:backgroundTint="@color/button_back"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonSeeHowVectorEasier"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonSeeHowVectorEasier"
+        app:layout_constraintTop_toTopOf="@+id/buttonSeeHowVectorEasier" />
+
+    <TextView
+        android:id="@+id/textViewVectorEasierResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSeeHowVectorEasier"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/es_linearVectorEasierTwo" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

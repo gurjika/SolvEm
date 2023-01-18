@@ -4,7 +4,6 @@ class ReduceFraction {
 
         private fun gcd(x: Int, y: Int): Int {
 
-
             return if(y == 0){
                 x
             } else {

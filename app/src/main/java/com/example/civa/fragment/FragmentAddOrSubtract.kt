@@ -1,4 +1,4 @@
-package com.example.civa
+package com.example.civa.fragment
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.civa.fragment.Display
-import com.example.civa.fragment.DisplayAlgebrals
-import com.example.civa.fragment.GetRidOfZeroes
+import com.example.civa.MakeGridLayout
+import com.example.civa.R
+import com.example.civa.ValidateEditTexts
 import com.google.firebase.database.*
 
 class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
@@ -48,7 +47,7 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
         operation = receiving[2].toString()
         numberOfColumns = receiving[1].toString().toInt()
         numberOfRows = receiving[0].toString().toInt()
-
+        val builder = BuilderTool()
         comeFromHistory = FragmentAddOrSubtractArgs.fromBundle(requireArguments()).comeFromHistory
 
 
@@ -60,30 +59,22 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
         val editTexts2 = Array(numberOfRows) { arrayOfNulls<EditText>(numberOfColumns) }
         val textViews = Array(numberOfRows) { arrayOfNulls<TextView>(numberOfColumns) }
         operationTextView.text = operation
-        val gridLayout1 = GridLayout(requireActivity())
+        val gridLayout1 = builder.buildGrid(
+            requireActivity(),
+            editTexts1,
+            numberOfRows,
+            numberOfColumns)
 
-        gridLayout1.rowCount = numberOfRows
-        gridLayout1.columnCount = numberOfColumns
+
         val setPos = MakeGridLayout()
-        for (i in 0 until numberOfRows) {
-            for (j in 0 until numberOfColumns) {
-                editTexts1[i][j] = EditText(activity)
-                setPos.setPosForEditText(editTexts1[i][j], i, j, 70)
-                gridLayout1.addView(editTexts1[i][j])
-            }
-        }
-        esLinear.addView(gridLayout1)
-        val gridLayout2 = GridLayout(requireActivity())
-        gridLayout2.rowCount = numberOfRows
-        gridLayout2.columnCount = numberOfColumns
 
-        for (i in 0 until numberOfRows) {
-            for (j in 0 until numberOfColumns) {
-                editTexts2[i][j] = EditText(activity)
-                setPos.setPosForEditText(editTexts2[i][j], i, j, 70)
-                gridLayout2.addView(editTexts2[i][j])
-            }
-        }
+        esLinear.addView(gridLayout1)
+        val gridLayout2 = builder.buildGrid(
+            requireActivity(),
+            editTexts2,
+            numberOfRows,
+            numberOfColumns
+        )
         esLinear1.addView(gridLayout2)
 
         if(comeFromHistory){
@@ -168,34 +159,19 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
                 Context.MODE_PRIVATE
             )
 
-            resultStringOne = resultStringOne + numberOfColumns.toString()  +
-                    ";" + numberOfRows.toString() + ";" + operation + ";" + toSendOperation
-            resultStringTwo = resultStringTwo + numberOfColumns.toString()  +
-                    ";" + numberOfRows.toString() + ";" + toSendOperation
+            resultStringOne = resultStringOne + numberOfRows.toString()  +
+                    ";" + numberOfColumns.toString() + ";" + operation + ";" + toSendOperation
+            resultStringTwo = resultStringTwo + numberOfRows.toString()  +
+                    ";" + numberOfColumns.toString() + ";" + toSendOperation
 
             if(!comeFromHistory) {
-                val valueEventListener = object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val currentValue = dataSnapshot.child("0").value.toString().toInt()
-                        val updatedValue = currentValue + 1
-                        database.child("email").child("0").setValue(currentValue + 2)
-                        database.child("email").child(updatedValue.toString())
-                            .setValue(resultStringOne)
-                        database.child("email").child((updatedValue + 1).toString())
-                            .setValue(resultStringTwo)
-                        sharedPreferences.edit()
-                            .putString(updatedValue.toString(), resultStringOne)
-                            .putString((updatedValue + 1).toString(), resultStringTwo)
-                            .apply()
-
-                        Toast.makeText(requireActivity(), "added", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Toast.makeText(requireActivity(), "noooooooo", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                database.child("email").addListenerForSingleValueEvent(valueEventListener)
+                builder.uploadMatrix(
+                    requireActivity(),
+                    database,
+                    sharedPreferences,
+                    resultStringOne,
+                    resultStringTwo
+                )
             }
 
 
