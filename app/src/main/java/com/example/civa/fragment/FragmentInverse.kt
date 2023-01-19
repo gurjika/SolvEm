@@ -107,14 +107,12 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
         }
 
         seeHowButton.setOnClickListener {
-
             seeHowButton.isEnabled = false
             buttonCalculate.isEnabled = false
             recyclerView.visibility = View.VISIBLE
             adapter = Display(toSendArray)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-
         }
         val check = GetRidOfZeroes()
         buttonCalculate.setOnClickListener {
@@ -191,6 +189,7 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
 
                     if(!determinant.toString().endsWith(".0") ||
                             !algebralArray[index].toString().endsWith(".0")){
+
                         determinant = BigDecimal(determinant)
                             .setScale(2,RoundingMode.HALF_DOWN).toDouble()
                         algebralArray[index] = BigDecimal(algebralArray[index])

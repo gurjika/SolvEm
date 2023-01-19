@@ -41,7 +41,7 @@ class FragmentLogin:Fragment(R.layout.fragment_login) {
         buttonLogin.setOnClickListener {
 
             if(!builder.checkInternet(requireActivity())){
-                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), "არ არის ინტერნეტთან წვდომა", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -56,7 +56,6 @@ class FragmentLogin:Fragment(R.layout.fragment_login) {
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {task ->
                     if(task.isSuccessful){
-
                         val action = FragmentLoginDirections
                          .actionFragmentLoginToFragmentHome()
                         findNavController().navigate(action)

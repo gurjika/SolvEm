@@ -35,7 +35,4 @@ class MakeGridLayout {
         textView.gravity = Gravity.CENTER
         textView.setTextColor(Color.BLACK)
     }
-
-
-
 }

@@ -43,13 +43,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         navController = findNavController(R.id.nav_host_fragment)
         if (FirebaseAuth.getInstance().currentUser != null) {
-            Toast.makeText(this, "wabida", Toast.LENGTH_SHORT).show()
+
             navController.popBackStack(R.id.fragmentLogin, true);
             navController.navigate(R.id.fragmentHome, null)
             NavOptions.Builder().setPopUpTo(R.id.fragmentHome, true).build()
         } else {
 
-            Toast.makeText(this, "arrari", Toast.LENGTH_SHORT).show()
             navController.navigate(R.id.fragmentLogin)
         }
 

@@ -45,6 +45,7 @@ class BuilderTool {
         val gridLayout = GridLayout(context)
         gridLayout.rowCount = rows
         gridLayout.columnCount = columns
+
         for (i in 0 until rows) {
             for (j in 0 until columns) {
                 editTexts[i][j] = EditText(context)
@@ -60,6 +61,7 @@ class BuilderTool {
         database: DatabaseReference,
         resultStringOne: String,
         resultStringTwo: String?){
+
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val currentValue = dataSnapshot.child("matrix").child("0").value.toString().toInt()

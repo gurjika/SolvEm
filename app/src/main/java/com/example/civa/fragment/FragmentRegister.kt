@@ -40,7 +40,7 @@ class FragmentRegister:Fragment(R.layout.fragment_register) {
         buttonRegister.setOnClickListener {
 
             if(!builder.checkInternet(requireActivity())){
-                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), "ინტერნეტთან წვდომა არ არის", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

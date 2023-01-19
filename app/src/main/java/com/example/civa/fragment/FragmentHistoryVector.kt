@@ -50,7 +50,9 @@ class FragmentHistoryVector:Fragment(R.layout.fragment_history_vector) {
                     for (i in 1..counter) {
                         val key = i.toString()
                         val resultSet = dataSnapshot.child(key).getValue(String::class.java)
+
                         var resultArray: List<String> = resultSet!!.split(";")
+
                         val destinationIfClicked = resultArray.last()
                         resultArray = resultArray.dropLast(1)
 
@@ -87,12 +89,15 @@ class FragmentHistoryVector:Fragment(R.layout.fragment_history_vector) {
                             grids.add(gridLayout)
                             toSaveVectors[indexForVectorArray] = resultArray.toTypedArray()
                             indexForVectorArray++
+
                             if (fewVectorSituation) {
                                 continue
                             }
+
                             if (grids.size == 2) {
                                 grids.add(null)
                             }
+
                             toSendData.add(
                                 HistoryVector(
                                     dimension.toString(),
@@ -106,6 +111,7 @@ class FragmentHistoryVector:Fragment(R.layout.fragment_history_vector) {
                                     destinationIfClicked
                                 )
                             )
+
                             indexForVectorArray = 0
                             toSaveVectors[2] = null
                             grids.clear()

@@ -56,10 +56,21 @@ class FragmentHistory: Fragment(R.layout.fragment_history) {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (i in 1..counter) {
                         val key = i.toString()
+
                         val resultSet = dataSnapshot.child(key).getValue(String::class.java)
+
+
+
                         var resultArray: List<String> = resultSet!!.split(";")
+
+
+
                         val destinationIfClicked = resultArray.last()
+
+
                         resultArray = resultArray.dropLast(1)
+
+
                         var twoMatrixSituation = false
 
                         if (resultArray.last() in "+x-<>") {
@@ -80,22 +91,24 @@ class FragmentHistory: Fragment(R.layout.fragment_history) {
                             val gridLayout = GridLayout(requireActivity())
                             gridLayout.rowCount = row
                             gridLayout.columnCount = column
+
                             for (i in 0 until row) {
                                 for (j in 0 until column) {
                                     textViews[i][j] = TextView(requireActivity())
                                     setPos.setPosForText(textViews[i][j], i, j, 60)
-
                                     textViews[i][j]!!.text = resultArray[index]
                                     index++
                                     gridLayout.addView(textViews[i][j])
-
                                 }
                             }
+
                             if (twoMatrixSituation) {
                                 checkForSecondMatrixArray = gridLayout
                                 toPassArraylist = resultArray.toTypedArray()
                                 continue
                             }
+
+
                             grids.add(
                                 History(
                                     checkForSecondMatrixArray,
