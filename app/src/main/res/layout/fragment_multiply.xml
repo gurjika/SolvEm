@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#252323"
-    >
+    android:background="#252323">
 
     <LinearLayout
         android:id="@+id/es_linearMultiply"
@@ -34,44 +33,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/buttonCalculateMultiply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#FF9800"
-        android:text="CALCULATE"
+        android:text="="
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonClearMultiply"
+        app:layout_constraintBottom_toBottomOf="@+id/seeHowButtonMultiply"
+        app:layout_constraintEnd_toStartOf="@+id/seeHowButtonMultiply"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultTextMultiply" />
-
+        app:layout_constraintTop_toTopOf="@+id/seeHowButtonMultiply" />
 
     <Button
         android:id="@+id/buttonClearMultiply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:progressBackgroundTint="@color/white"
         android:progressTint="#FF9800"
-        android:text="CLEAR"
+        android:text="C"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/seeHowButtonMultiply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonCalculateMultiply"
-        app:layout_constraintTop_toBottomOf="@+id/resultTextMultiply" />
+        app:layout_constraintStart_toEndOf="@+id/seeHowButtonMultiply"
+        app:layout_constraintTop_toTopOf="@+id/seeHowButtonMultiply" />
 
     <LinearLayout
         android:id="@+id/es_linearMultiply1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/ln_border"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,19 +81,19 @@
         android:id="@+id/seeHowButtonMultiply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See how"
+        android:text="Show"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCalculateMultiply" />
+        app:layout_constraintEnd_toStartOf="@+id/buttonClearMultiply"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateMultiply" />
 
     <LinearLayout
         android:id="@+id/linearMultiplyResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:orientation="horizontal"
         android:background="@drawable/ln_border"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/buttonClearMultiply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/resultTextMultiply"

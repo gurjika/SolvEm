@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#252323">
 
     <Button
         android:id="@+id/buttonCalculateVectorHarder"
@@ -11,7 +12,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/button_back"
         android:text="="
-        app:layout_constraintBottom_toBottomOf="@+id/buttonClearVectorHarder"
         app:layout_constraintEnd_toStartOf="@+id/buttonClearVectorHarder"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,11 +23,10 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/button_back"
         android:text="Clear"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonSeeHowVectorHarder"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonSeeHowVectorHarder"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonCalculateVectorHarder"
-        app:layout_constraintTop_toTopOf="@+id/buttonSeeHowVectorHarder" />
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateVectorHarder" />
 
     <Button
         android:id="@+id/buttonSeeHowVectorHarder"
@@ -36,29 +35,20 @@
         android:backgroundTint="@color/button_back"
         android:enabled="false"
         android:text="See how"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonMoreVectorHarder"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonClearVectorHarder" />
-
-    <Button
-        android:id="@+id/buttonMoreVectorHarder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/button_back"
-        android:text="More"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonSeeHowVectorHarder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonSeeHowVectorHarder"
-        app:layout_constraintTop_toTopOf="@+id/buttonSeeHowVectorHarder" />
+        app:layout_constraintStart_toEndOf="@+id/buttonClearVectorHarder"
+        app:layout_constraintTop_toTopOf="@+id/buttonClearVectorHarder" />
 
     <TextView
         android:id="@+id/textViewVectorHarderResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         android:maxLength="30"
         android:text=""
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSeeHowVectorHarder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -67,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
         app:layout_constraintBottom_toTopOf="@+id/textViewVectorHarderResult"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,9 +67,9 @@
             android:id="@+id/es_linearVectorHarder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/ln_border"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+            android:orientation="horizontal">
 
         </LinearLayout>
 
@@ -86,8 +77,9 @@
             android:id="@+id/es_linearVectorHarderTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+            android:background="@drawable/ln_border"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
 
 
         </LinearLayout>
@@ -95,9 +87,9 @@
         <LinearLayout
             android:id="@+id/es_linearVectorHarderMatrix"
             android:layout_width="wrap_content"
+            android:background="@drawable/ln_border"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
 
 
         </LinearLayout>

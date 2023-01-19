@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.civa.fragment.BuilderTool
 import com.example.civa.fragment.FragmentInverse
 import com.example.civa.fragment.FragmentInverseArgs
+import com.example.civa.fragment.GetRidOfZeroes
 import com.google.firebase.database.*
 
 class FragmentTransp: Fragment(R.layout.fragment_transp) {
@@ -43,11 +44,14 @@ class FragmentTransp: Fragment(R.layout.fragment_transp) {
         buttonCalculate = view.findViewById(R.id.buttonCalculateTrasnp)
         esLinear = view.findViewById(R.id.es_linearTranp)
         seeHowButton = view.findViewById(R.id.seeHowButtonTransp)
+
+        seeHowButton.isEnabled = false
         clear = view.findViewById(R.id.buttonClearTransp)
         linearTranspResult = view.findViewById(R.id.linearResultTrasnp)
         val editTexts = Array(numberOfRows) { arrayOfNulls<EditText>(numberOfColumns) }
         val textViews = Array(numberOfColumns) { arrayOfNulls<TextView>(numberOfRows) }
         val checkEditText = ValidateEditTexts()
+        val checker = GetRidOfZeroes()
         array = Array(numberOfRows) { DoubleArray(numberOfColumns) }
         comeFromHistory = FragmentInverseArgs.fromBundle(requireArguments()).comeFromHistory
         val builder = BuilderTool()
@@ -57,6 +61,20 @@ class FragmentTransp: Fragment(R.layout.fragment_transp) {
             numberOfRows,
             numberOfColumns
         )
+
+        clear.setOnClickListener {
+
+            for (i in 0 until numberOfRows) {
+                for (j in 0 until numberOfColumns) {
+                    array[i][j] = 0.0
+                    editTexts[i][j]!!.text = null
+                }
+            }
+            esLinear.visibility = View.VISIBLE
+            linearTranspResult.visibility = View.INVISIBLE
+            buttonCalculate.isEnabled = true
+
+        }
 
         esLinear.addView(gridLayout)
         if(comeFromHistory){
@@ -72,17 +90,27 @@ class FragmentTransp: Fragment(R.layout.fragment_transp) {
 
 
         buttonCalculate.setOnClickListener {
+
+            if(!builder.checkInternet(requireActivity())){
+                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if(checkEditText.validateEm(editTexts, numberOfRows, numberOfColumns)) {
                 for (i in 0 until numberOfRows) {
                     for (j in 0 until numberOfColumns) {
                         array[i][j] = editTexts[i][j]!!.text.toString().toDouble()
-                        resultString = resultString + array[i][j].toString() + ";"
+                        resultString = resultString + checker.noZeroes(array[i][j].toString()) + ";"
                     }
                 }
             }
             else{
                 return@setOnClickListener
             }
+
+            buttonCalculate.isEnabled = false
+            linearTranspResult.visibility = View.VISIBLE
+            linearTranspResult.removeAllViews()
             linearTranspResult.addView(
                 makeActualTextViewGridLayout(
                     numberOfRows,
@@ -90,19 +118,15 @@ class FragmentTransp: Fragment(R.layout.fragment_transp) {
                 )
             )
 
-
+            esLinear.visibility = View.INVISIBLE
             resultString = "$resultString$numberOfRows;$numberOfColumns;TRANSP"
             database = FirebaseDatabase.getInstance().getReference("Users")
-            sharedPreferences = this.requireActivity().getSharedPreferences(
-                "MY_PREFS",
-                Context.MODE_PRIVATE
-            )
+
 
             if (!comeFromHistory) {
                 builder.uploadMatrix(
                     requireActivity(),
                     database,
-                    sharedPreferences,
                     resultString,
                     null
                 )
@@ -120,7 +144,7 @@ class FragmentTransp: Fragment(R.layout.fragment_transp) {
         for (i in 0 until numberOfRows) {
             for (j in 0 until numberOfColumns) {
                 textViews[j][i] = TextView(requireActivity())
-                setPos.setPosForText(textViews[j][i], j, i, 100)
+                setPos.setPosForText(textViews[j][i], j, i, 150)
                 textViews[j][i]!!.text = ArrayOfText[i][j].toString()
                 gridLayout.addView(textViews[j][i])
             }

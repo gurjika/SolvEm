@@ -16,11 +16,17 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.civa.fragment.FragmentHome
 import com.example.civa.fragment.FragmentInverse
+import com.example.civa.fragment.FragmentLogin
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
@@ -30,27 +36,25 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var database: DatabaseReference
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        navController = findNavController(R.id.nav_host_fragment)
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            Toast.makeText(this, "wabida", Toast.LENGTH_SHORT).show()
+            navController.popBackStack(R.id.fragmentLogin, true);
+            navController.navigate(R.id.fragmentHome, null)
+            NavOptions.Builder().setPopUpTo(R.id.fragmentHome, true).build()
+        } else {
 
-//        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        val network = connectivityManager.activeNetwork
-//        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
-//        if(networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-//            Toast.makeText(this, "ae", Toast.LENGTH_SHORT).show()
-//        } else {
-//            Toast.makeText(this, "ae", Toast.LENGTH_SHORT).show()
-//        }
-
-
-
-
-
-
-
+            Toast.makeText(this, "arrari", Toast.LENGTH_SHORT).show()
+            navController.navigate(R.id.fragmentLogin)
+        }
 
         bottomNavigationView = findViewById(R.id.bottomnav)
+
         navController = findNavController(R.id.nav_host_fragment)
         bottomNavigationView.setupWithNavController(navController)
         val actionBar: ActionBar? = supportActionBar

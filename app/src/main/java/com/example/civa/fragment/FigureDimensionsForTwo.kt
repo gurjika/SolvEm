@@ -44,6 +44,7 @@ class FigureDimensionsForTwo:Fragment(R.layout.fragment_figure_dimensions_for_tw
                 gridLayoutOne.addView(buttonsOne[i][j])
             }
         }
+        buttonsOne[0][0]!!.isEnabled = false
         linearLayoutFirst.addView(gridLayoutOne)
 
         val gridLayoutTwo = GridLayout(activity)
@@ -56,6 +57,7 @@ class FigureDimensionsForTwo:Fragment(R.layout.fragment_figure_dimensions_for_tw
                 gridLayoutTwo.addView(buttonsTwo[i][j])
             }
         }
+        buttonsTwo[0][0]!!.isEnabled = false
         linearLayoutSecond.addView(gridLayoutTwo)
 
         buttonsOne[0][0]!!.background.setTint(Color.parseColor("#FF9800"))
@@ -63,8 +65,8 @@ class FigureDimensionsForTwo:Fragment(R.layout.fragment_figure_dimensions_for_tw
         buttonsTwo[0][0]!!.background.setTint(Color.parseColor("#FF9800"))
         buttonsTwo[0][0]!!.isEnabled = false
 
-        var rowOne = 0
-        var columnOne = 0
+        var rowOne = 1
+        var columnOne = 2
         for (i in 0 until 5) {
             for (j in 0 until 5) {
                 val button = buttonsOne[i][j]
@@ -79,8 +81,8 @@ class FigureDimensionsForTwo:Fragment(R.layout.fragment_figure_dimensions_for_tw
                 }
             }
         }
-        var rowTwo = 0
-        var columnTwo = 0
+        var rowTwo = 3
+        var columnTwo = 4
         for (i in 0 until 5) {
             for (j in 0 until 5) {
                 val button = buttonsTwo[i][j]

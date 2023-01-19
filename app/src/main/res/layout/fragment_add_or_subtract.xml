@@ -50,44 +50,42 @@
         android:id="@+id/buttonAddOrSubtractCalculate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="calculate"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonAddOrSubtractClear"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAddOrSubtractClear"
+        android:backgroundTint="@color/button_back"
+        android:text="="
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddOrSubtractSeeHow"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonAddOrSubtractClear" />
+        app:layout_constraintTop_toTopOf="@+id/buttonAddOrSubtractSeeHow" />
 
     <Button
         android:id="@+id/buttonAddOrSubtractSeeHow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="see how"
-
-        app:layout_constraintBottom_toBottomOf="@+id/buttonAddOrSubtractClear"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/button_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddOrSubtractClear"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonAddOrSubtractClear"
-        app:layout_constraintTop_toTopOf="@+id/buttonAddOrSubtractClear" />
+        app:layout_constraintStart_toEndOf="@+id/buttonAddOrSubtractCalculate" />
 
     <Button
         android:id="@+id/buttonAddOrSubtractClear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="clear"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAddOrSubtractSeeHow"
+        android:text="C"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonAddOrSubtractCalculate" />
+        app:layout_constraintStart_toEndOf="@+id/buttonAddOrSubtractSeeHow"
+        app:layout_constraintTop_toTopOf="@+id/buttonAddOrSubtractSeeHow" />
 
     <LinearLayout
         android:id="@+id/es_linearAddOrSubtractResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/ln_border"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/es_linearAddOrSubtractSecond"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/ln_border"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/es_linearAddOrSubtractFirst">
 

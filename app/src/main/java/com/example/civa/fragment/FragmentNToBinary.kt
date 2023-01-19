@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +44,11 @@ class FragmentNToBinary:Fragment(R.layout.fragment_n_to_binary) {
             editTextNToBinary.append(receivedDecimal)
         }
         buttonCalculate.setOnClickListener {
+
+            if(!builder.checkInternet(requireActivity())){
+                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             toSendData.clear()
             var goToBinary = editTextNToBinary.text.toString().toLong()
             if(comeFromHistory) {

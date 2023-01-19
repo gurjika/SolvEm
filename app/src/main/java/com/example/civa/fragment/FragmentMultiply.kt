@@ -93,43 +93,66 @@ class FragmentMultiply:Fragment(R.layout.fragment_multiply) {
 
 
         database = FirebaseDatabase.getInstance().getReference("Users")
-        sharedPreferences = this.requireActivity().getSharedPreferences(
-            "MY_PREFS",
-            Context.MODE_PRIVATE
-        )
+
         val multiply = Multiply()
         val checkEditText = ValidateEditTexts()
         val checker = GetRidOfZeroes()
 
+        clear.setOnClickListener {
+            for(i in 0 until rowOne){
+                for(j in 0 until columnOne){
+                    editTexts1[i][j]!!.text = null
+                    array[i][j] = 0.0
+                }
+            }
+            for(i in 0 until rowTwo){
+                for(j in 0 until columnTwo){
+                    editTexts2[i][j]!!.text = null
+                    array1[i][j] = 0.0
+                }
+            }
+            esLinear.visibility = View.VISIBLE
+            esLinear1.visibility = View.VISIBLE
+            buttonCalculate.isEnabled = true
+            linearMultiplyResult.visibility = View.INVISIBLE
+        }
+
         buttonCalculate.setOnClickListener {
+
+            if(!builder.checkInternet(requireActivity())){
+                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             resultStringOne = ""
             resultStringTwo = ""
+            if (checkEditText.validateEm(editTexts1, editTexts1.size, editTexts1[0].size)){
             for (i in 0 until editTexts1.size) {
                 for (j in 0 until editTexts1[0].size) {
-                    if (checkEditText.validateEm(editTexts1, editTexts1.size, editTexts1[0].size)) {
                         array[i][j] = editTexts1[i][j]?.text.toString().toDouble()
-                        resultStringOne = resultStringOne + array[i][j].toString() + ";"
-
-                    } else {
-                        return@setOnClickListener
+                        resultStringOne = resultStringOne + checker.noZeroes(array[i][j].toString()) + ";"
                     }
                 }
             }
+            else {
+                return@setOnClickListener
+            }
 
-
+            if (checkEditText.validateEm(editTexts2, editTexts2.size, editTexts2[0].size)){
             for (i in 0 until editTexts2.size) {
                 for (j in 0 until editTexts2[0].size) {
-                    if (checkEditText.validateEm(editTexts2, editTexts2.size, editTexts2[0].size)) {
                         array1[i][j] = editTexts2[i][j]?.text.toString().toDouble()
-
-                        resultStringTwo = resultStringTwo + array1[i][j].toString() + ";"
-                    } else {
-                        return@setOnClickListener
+                        resultStringTwo = resultStringTwo + checker.noZeroes(array1[i][j].toString()) + ";"
                     }
                 }
             }
+            else {
+                return@setOnClickListener
+            }
+            linearMultiplyResult.visibility = View.VISIBLE
+            esLinear.visibility = View.INVISIBLE
+            esLinear1.visibility = View.INVISIBLE
 
-
+            buttonCalculate.isEnabled = false
             resultStringOne = "$resultStringOne$rowOne;$columnOne;x;MULTIPLY"
             resultStringTwo =  "$resultStringTwo$rowTwo;$columnTwo;MULTIPLY"
 
@@ -137,7 +160,6 @@ class FragmentMultiply:Fragment(R.layout.fragment_multiply) {
                 builder.uploadMatrix(
                     requireActivity(),
                     database,
-                    sharedPreferences,
                     resultStringOne,
                     resultStringTwo)
             }
@@ -158,10 +180,12 @@ class FragmentMultiply:Fragment(R.layout.fragment_multiply) {
                 for (j in 0 until result[0].size) {
                     textViews[i][j] = TextView(requireActivity())
                     textViews[i][j]!!.text = checker.noZeroes(result[i][j].toString())
-                    setPos.setPosForText(textViews[i][j], i, j, 100)
+                    setPos.setPosForText(textViews[i][j], i, j, 150)
                     resultGridLayout.addView(textViews[i][j])
                 }
             }
+
+            linearMultiplyResult.removeAllViews()
             linearMultiplyResult.addView(resultGridLayout)
 
         }

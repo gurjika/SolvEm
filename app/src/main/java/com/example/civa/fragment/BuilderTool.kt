@@ -1,8 +1,11 @@
 package com.example.civa.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
@@ -11,12 +14,15 @@ import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.civa.MakeGridLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 
 class BuilderTool {
+
+    var userUID = FirebaseAuth.getInstance().currentUser?.uid
     fun buildLinear(context: Context, editTexts: Array<EditText?>, esLinear: LinearLayout, dimension:Int){
         for(i in 0 until dimension){
             val maxLength = 5
@@ -24,9 +30,9 @@ class BuilderTool {
             editTexts[i] = EditText(context)
             esLinear.addView(editTexts[i])
             editTexts[i]!!.gravity = Gravity.CENTER
-            editTexts[i]!!.width = 70
+            editTexts[i]!!.width = 100
             editTexts[i]!!.filters = arrayOf(inputFilter)
-            editTexts[i]!!.height = 70
+            editTexts[i]!!.height = 100
             editTexts[i]!!.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
             editTexts[i]!!.setTextColor(Color.BLACK)
         }
@@ -42,7 +48,7 @@ class BuilderTool {
         for (i in 0 until rows) {
             for (j in 0 until columns) {
                 editTexts[i][j] = EditText(context)
-                setPos.setPosForEditText(editTexts[i][j], i, j, 100)
+                setPos.setPosForEditText(editTexts[i][j], i, j, 110)
                 gridLayout.addView(editTexts[i][j])
             }
         }
@@ -52,45 +58,38 @@ class BuilderTool {
     fun uploadMatrix(
         context: Context,
         database: DatabaseReference,
-        sharedPreferences: SharedPreferences,
         resultStringOne: String,
         resultStringTwo: String?){
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val currentValue = dataSnapshot.child("matrix").child("0").value.toString().toInt()
                 val updatedValue = currentValue + 1
-                database.child("email").child("matrix").child("0")
+                database.child(userUID!!).child("matrix").child("0")
                     .setValue(updatedValue)
-                database.child("email").child("matrix").child(updatedValue.toString())
+                database.child(userUID!!).child("matrix").child(updatedValue.toString())
                     .setValue(resultStringOne)
 
-                sharedPreferences.edit()
-                    .putString(updatedValue.toString(), resultStringOne)
-                    .apply()
-                Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
+
+
 
                 if(resultStringTwo != null){
-                    database.child("email").child("matrix").child((updatedValue + 1).toString())
+                    database.child(userUID!!).child("matrix").child((updatedValue + 1).toString())
                         .setValue(resultStringTwo)
-                    database.child("email").child("matrix").child("0")
+                    database.child(userUID!!).child("matrix").child("0")
                         .setValue(updatedValue + 1)
-                    sharedPreferences.edit()
-                        .putString((updatedValue + 1).toString(), resultStringTwo)
-                        .apply()
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(context, "noooooooo", Toast.LENGTH_SHORT).show()
+
             }
         }
-        database.child("email").addListenerForSingleValueEvent(valueEventListener)
+        database.child(userUID!!).addListenerForSingleValueEvent(valueEventListener)
     }
 
     fun uploadVector(
         context: Context,
         database: DatabaseReference,
-        sharedPreferences: SharedPreferences,
         resultStringOne: String,
         resultStringTwo: String,
         resultStringThree: String?){
@@ -100,36 +99,30 @@ class BuilderTool {
                     .child("0").value.toString().toInt()
                 val updatedValue = currentValue + 1
 
-                database.child("email").child("vector")
+                database.child(userUID!!).child("vector")
                     .child("0").setValue(updatedValue + 1)
 
-                database.child("email").child("vector")
+                database.child(userUID!!).child("vector")
                     .child(updatedValue.toString()).setValue(resultStringOne)
 
-                database.child("email").child("vector")
+                database.child(userUID!!).child("vector")
                     .child((updatedValue + 1).toString()).setValue(resultStringTwo)
 
-                sharedPreferences.edit()
-                    .putString(updatedValue.toString(), resultStringOne)
-                    .putString((updatedValue + 1).toString(), resultStringTwo)
-                    .apply()
+
                 if(resultStringThree != null){
-                    database.child("email").child("vector")
+                    database.child(userUID!!).child("vector")
                         .child((updatedValue + 2).toString()).setValue(resultStringThree)
-                    sharedPreferences.edit()
-                        .putString((updatedValue + 2).toString(), resultStringThree)
-                        .apply()
-                    database.child("email").child("vector")
+                    database.child(userUID!!).child("vector")
                         .child("0").setValue(updatedValue + 2)
                 }
 
-                Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
+
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(context, "noooooooo", Toast.LENGTH_SHORT).show()
+
             }
         }
-        database.child("email").addListenerForSingleValueEvent(valueEventListener)
+        database.child(userUID!!).addListenerForSingleValueEvent(valueEventListener)
     }
     fun uploadBinary(
         context: Context,
@@ -142,19 +135,38 @@ class BuilderTool {
                     .child("0").value.toString().toInt()
                 val updatedValue = currentValue + 1
 
-                database.child("email").child("binary")
+                database.child(userUID!!).child("binary")
                     .child("0").setValue(updatedValue)
 
-                database.child("email").child("binary")
+                database.child(userUID!!).child("binary")
                     .child(updatedValue.toString()).setValue(resultStringOne)
 
-                Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
+
             }
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(context, "noooooooo", Toast.LENGTH_SHORT).show()
+
             }
         }
-        database.child("email").addListenerForSingleValueEvent(valueEventListener)
+        database.child(userUID!!).addListenerForSingleValueEvent(valueEventListener)
 
+    }
+
+    fun checkInternet(context:Context):Boolean{
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+        return if(networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+            true
+        } else {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("ინტერნეტთან წვდომა არ არის")
+            builder.setMessage("")
+            builder.setPositiveButton("OK") { _, _ ->
+
+            }
+            val dialog = builder.create()
+            dialog.show()
+            false
+        }
     }
 }

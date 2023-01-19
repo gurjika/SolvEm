@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#252323"
-    >
+    android:background="#252323">
 
     <LinearLayout
         android:id="@+id/es_linearFindX"
@@ -23,55 +22,54 @@
         android:id="@+id/resultTextFindX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
         android:layout_marginEnd="100dp"
         android:text="RESULT: "
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/linearFindXResult"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/linearFindXResult" />
+
 
     <Button
         android:id="@+id/buttonCalculateFindX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FF9800"
-        android:text="CALCULATE"
+        android:backgroundTint="@color/button_back"
+        android:text="="
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonClearFindX"
+        app:layout_constraintBottom_toBottomOf="@+id/seeHowButtonFIndX"
+        app:layout_constraintEnd_toStartOf="@+id/seeHowButtonFIndX"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultTextFindX" />
-
+        app:layout_constraintTop_toTopOf="@+id/seeHowButtonFIndX"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonClearFindX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:progressBackgroundTint="@color/white"
         android:progressTint="#FF9800"
-        android:text="CLEAR"
+        android:text="C"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/seeHowButtonFIndX"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonCalculateFindX"
-        app:layout_constraintTop_toBottomOf="@+id/resultTextFindX" />
+        app:layout_constraintStart_toEndOf="@+id/seeHowButtonFIndX"
+        app:layout_constraintTop_toTopOf="@+id/seeHowButtonFIndX" />
 
     <LinearLayout
         android:id="@+id/es_linearFindX1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/ln_border"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,19 +81,20 @@
         android:id="@+id/seeHowButtonFIndX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_back"
         android:text="See how"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCalculateFindX" />
+        app:layout_constraintEnd_toStartOf="@+id/buttonClearFindX"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateFindX" />
 
     <LinearLayout
         android:id="@+id/linearFindXResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:orientation="horizontal"
         android:background="@drawable/ln_border"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/buttonClearFindX"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/resultTextFindX"

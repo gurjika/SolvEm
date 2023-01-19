@@ -4,18 +4,18 @@ class Determinant {
     var counter = 0
     var neededForColumns = 0
     var neededForRows = 0
-    fun determinant(row:Int, column:Int, needed:Int, Array:Array<DoubleArray>, n:Int):Double{
+    fun determinant(column:Int, row:Int, needed:Int, Array:Array<DoubleArray>, n:Int):Double{
 
             counter++
             var parent = 0.0
 
             val saveArray = Array((n - 1) - needed){DoubleArray((n - 1)- needed)}
-            parent = Array[column][row]
+            parent = Array[row][column]
             if(counter == 1){
                 parent = 1.0
             }
 
-            if((row + column) % 2 != 0){
+            if((column + row) % 2 != 0){
                 parent = -parent
             }
 
@@ -23,16 +23,12 @@ class Determinant {
             var e = 0
 
             for (i in 0.. (n - 1) - needed) {
-                if (column == i) {
+                if (row == i) {
                     continue
                 }
                 for (m in 0..(n - 1) - needed) {
-                    if(needed > 0 && row == n - needed - 1) {
-                        if(row == m) {
-                            continue
-                        }
-                    }
-                    if(row == m){
+
+                    if(column == m){
                         continue
                     }
                         temporary.add(Array[i][m])

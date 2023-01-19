@@ -29,26 +29,29 @@ class FragmentHistory: Fragment(R.layout.fragment_history) {
     private var toPassArraylist :Array<String> = arrayOf()
     private var checkForSecondMatrixArray:GridLayout? = null
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
 
         database = FirebaseDatabase.getInstance().getReference("Users")
-        sharedPreferences = this.requireActivity().getSharedPreferences("MY_PREFS", MODE_PRIVATE)
+
         recyclerView = view.findViewById(R.id.recyclerHistory)
 
 
 
 
         var counter = 0
+        val builder = BuilderTool()
+        val user = builder.userUID
 
 
-        database.child("email").get().addOnSuccessListener {
+        database.child(user!!).get().addOnSuccessListener {
             counter = it.child("matrix").child("0").value.toString().toInt()
 
             val database = FirebaseDatabase.getInstance()
-            val ref = database.getReference("Users").child("email").child("matrix")
+            val ref = database.getReference("Users").child(user).child("matrix")
             ref.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (i in 1..counter) {
@@ -80,7 +83,7 @@ class FragmentHistory: Fragment(R.layout.fragment_history) {
                             for (i in 0 until row) {
                                 for (j in 0 until column) {
                                     textViews[i][j] = TextView(requireActivity())
-                                    setPos.setPosForText(textViews[i][j], i, j, 50)
+                                    setPos.setPosForText(textViews[i][j], i, j, 60)
 
                                     textViews[i][j]!!.text = resultArray[index]
                                     index++

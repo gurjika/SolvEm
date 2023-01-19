@@ -32,8 +32,8 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
     private var oldNewParent = 0.0
     private lateinit var adapter: Display
     private lateinit var resultLinearLayout: LinearLayout
-    private var parentArray: MutableList<DisplayAlgebrals> = mutableListOf()
-    private var sumArray: MutableList<Double> = mutableListOf()
+    private var toSendArray: MutableList<DisplayAlgebrals> = mutableListOf()
+    private var algebralArray: MutableList<Double> = mutableListOf()
     private var numberOfColumns = 4
     private var resultStringSet = linkedSetOf<String>()
     private lateinit var recyclerView: RecyclerView
@@ -49,7 +49,7 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        result = view.findViewById(R.id.textViewInverse)
+
         buttonCalculate = view.findViewById(R.id.buttonCalculateInverse)
         linear = view.findViewById(R.id.es_linearInverse)
         val dimension = FragmentInverseArgs.fromBundle(requireArguments()).dimension
@@ -63,20 +63,13 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
         linearInverseResult = view.findViewById(R.id.linearResultIneverse)
         val editTexts = Array(numberOfRows) { arrayOfNulls<EditText>(numberOfColumns) }
         val textViews = Array(numberOfRows) { arrayOfNulls<TextView>(numberOfColumns) }
-        val gridLayout = GridLayout(activity)
+        seeHowButton.isEnabled = false
         val setPos = MakeGridLayout()
         val builder = BuilderTool()
         array = Array(n) { DoubleArray(n) }
         comeFromHistory = FragmentInverseArgs.fromBundle(requireArguments()).comeFromHistory
-        gridLayout.rowCount = numberOfRows
-        gridLayout.columnCount = numberOfColumns
-        for (i in 0 until numberOfRows) {
-            for (j in 0 until numberOfColumns) {
-                editTexts[i][j] = EditText(activity)
-                setPos.setPosForEditText(editTexts[i][j], i, j, 100)
-                gridLayout.addView(editTexts[i][j])
-            }
-        }
+        val gridLayout = builder.buildGrid(requireActivity(),editTexts, numberOfRows, numberOfColumns)
+
         linear.addView(gridLayout)
 
         if(comeFromHistory) {
@@ -91,71 +84,134 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
                 }
             }
         }
-        val gridLayoutForResult = GridLayout(requireActivity())
 
-        gridLayoutForResult.rowCount = numberOfRows
-        gridLayoutForResult.columnCount = numberOfColumns
 
         val checkEditText = ValidateEditTexts()
-        var toAdd = ""
+        clear.setOnClickListener {
+            for(i in 0 until numberOfRows){
+                for(j in 0 until numberOfColumns){
+                    editTexts[i][j]!!.text = null
+                    array[i][j] = 0.0
+                }
+            }
+            linearInverseResult.visibility = View.INVISIBLE
+            linear.visibility = View.VISIBLE
+            resultString = ""
+            algebralArray.clear()
+            toSendArray.clear()
+            recyclerView.visibility = View.GONE
+            adapter = Display(toSendArray)
+            adapter.notifyDataSetChanged()
+            seeHowButton.isEnabled = false
+            buttonCalculate.isEnabled = true
+        }
 
+        seeHowButton.setOnClickListener {
+
+            seeHowButton.isEnabled = false
+            buttonCalculate.isEnabled = false
+            recyclerView.visibility = View.VISIBLE
+            adapter = Display(toSendArray)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
+        }
+        val check = GetRidOfZeroes()
         buttonCalculate.setOnClickListener {
+
+            if(!builder.checkInternet(requireActivity())){
+                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
+            val calculate = Determinant()
             if (checkEditText.validateEm(editTexts, n, n)) {
                 for (i in 0 until n) {
                     for (j in 0 until n) {
                         array[i][j] = editTexts[i][j]?.text.toString().toDouble()
-                        resultString = resultString + array[i][j].toString() + ";"
+                        resultString = resultString + check.noZeroes(array[i][j].toString()) + ";"
                     }
                 }
             }
             else{
                 return@setOnClickListener
             }
+            if(array.size == 2){
+                determinant = array[0][0] * array[1][1] - array[0][1] * array[1][0]
+            }
+            else {
+                for (i in 0 until numberOfColumns) {
+                    calculate.counter = 1
+                    determinant += calculate.determinant(i, 0, 0, array, numberOfColumns)
+                }
+            }
+            if(determinant == 0.0){
+                Toast.makeText(requireActivity(), "დეტერმინანტი ნულის ტოლია", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            buttonCalculate.isEnabled = false
+
+            algebralArray.clear()
+            toSendArray.clear()
+            seeHowButton.isEnabled = true
+            linear.visibility = View.INVISIBLE
+
             resultString = "$resultString$n;$n;INVERSE"
 
             database = FirebaseDatabase.getInstance().getReference("Users")
-            sharedPreferences = this.requireActivity().getSharedPreferences("MY_PREFS", MODE_PRIVATE)
+            if(array.size == 2) {
+                algebralArray.add(determinant * array[1][1])
+                algebralArray.add(-determinant * array[0][1])
+                algebralArray.add(-determinant * array[1][0])
+                algebralArray.add(determinant * array[0][0])
+                seeHowButton.isEnabled = false
+            }
+            else{
+                calculate()
+            }
 
-
-
-
-
-
-            calculate()
-
-            builder.uploadMatrix(requireActivity(), database, sharedPreferences, resultString, null)
-
+            if(!comeFromHistory) {
+                builder.uploadMatrix(requireActivity(), database, resultString, null)
+            }
+            comeFromHistory = true
             var index = 0
             val checker = ReduceFraction()
-            val check = GetRidOfZeroes()
+
+            val gridLayoutForResult = GridLayout(requireActivity())
+
+            gridLayoutForResult.rowCount = numberOfRows
+            gridLayoutForResult.columnCount = numberOfColumns
 
             for (i in 0 until numberOfRows) {
                 for (j in 0 until numberOfColumns) {
 
                     textViews[i][j] = TextView(requireActivity())
-                    setPos.setPosForText(textViews[i][j], i, j, 100)
-                    if(check.noZeroes(determinant.toString()) == determinant.toString()
-                        || check.noZeroes(sumArray[index].toString()) == sumArray[index].toString()){
-                        textViews[i][j]!!.text = BigDecimal(sumArray[index]/determinant)
-                            .setScale(2,RoundingMode.HALF_DOWN).toString()
+                    setPos.setPosForText(textViews[i][j], i, j, 150)
 
+                    if(!determinant.toString().endsWith(".0") ||
+                            !algebralArray[index].toString().endsWith(".0")){
+                        determinant = BigDecimal(determinant)
+                            .setScale(2,RoundingMode.HALF_DOWN).toDouble()
+                        algebralArray[index] = BigDecimal(algebralArray[index])
+                            .setScale(2, RoundingMode.HALF_DOWN).toDouble()
+                        textViews[i][j]!!.text =  "${algebralArray[index]}/\n$determinant"
                     }
-                    else if(sumArray[index].toInt() == 0){
-                         textViews[i][j]!!.text = BigDecimal(sumArray[index]/determinant)
-                            .setScale(2,RoundingMode.HALF_DOWN).toString()
 
-                    }
                     else{
-                        textViews[i][j]!!.text = checker.asFraction(sumArray[index].toInt(), determinant.toInt())
+                        textViews[i][j]!!.text = checker.asFraction(
+                            algebralArray[index].toInt(),determinant.toInt())
                         if(textViews[i][j]!!.text.toString().endsWith("/1")){
-                            textViews[i][j]!!.text.toString().dropLast(2)
+                            textViews[i][j]!!.text = textViews[i][j]!!.text.dropLast(2)
                         }
                     }
                     gridLayoutForResult.addView(textViews[i][j])
                     index++
                     }
                 }
+                linearInverseResult.removeAllViews()
                 linearInverseResult.addView(gridLayoutForResult)
+                linearInverseResult.visibility = View.VISIBLE
             }
 
     }
@@ -163,10 +219,7 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
 
         val calculate = Determinant()
 
-        for(i in 0 until numberOfColumns){
-            calculate.counter = 1
-            determinant += calculate.determinant(i, 0,0,array,numberOfColumns )
-        }
+        val check = GetRidOfZeroes()
 
         for(i in 0 until numberOfRows){
             for(j in 0 until numberOfColumns){
@@ -174,15 +227,11 @@ class FragmentInverse: Fragment(R.layout.fragment_inverse) {
                 calculate.neededForColumns = 0
                 calculate.neededForRows = 0
                 val answer = calculate.determinant(i, j, 0,array, numberOfRows)
-                sumArray.add(answer)
-                parentArray.add(DisplayAlgebrals(answer.toString()))
+                algebralArray.add(answer)
+                toSendArray.add(DisplayAlgebrals(check.noZeroes(answer.toString()),
+                    (i + 1).toString()+(j + 1).toString(), "A") )
             }
-
-
         }
-        adapter = Display(parentArray)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-
+        toSendArray.add(DisplayAlgebrals(check.noZeroes(determinant.toString()),"", "D"))
     }
 }

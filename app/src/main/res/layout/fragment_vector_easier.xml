@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#252323">
 
     <LinearLayout
         android:id="@+id/es_linearVectorEasier"
@@ -22,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@drawable/ln_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,10 +32,9 @@
     <Button
         android:id="@+id/buttonCalculateVectorEasier"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="="
+        android:layout_height="48dp"
         android:backgroundTint="@color/button_back"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonClearVectorEasier"
+        android:text="="
         app:layout_constraintEnd_toStartOf="@+id/buttonClearVectorEasier"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,43 +44,33 @@
         android:id="@+id/buttonClearVectorEasier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear"
         android:backgroundTint="@color/button_back"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonSeeHowVectorEasier"
+        android:text="Clear"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonSeeHowVectorEasier"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonCalculateVectorEasier"
-        app:layout_constraintTop_toTopOf="@+id/buttonSeeHowVectorEasier" />
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateVectorEasier" />
 
     <Button
         android:id="@+id/buttonSeeHowVectorEasier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See how"
         android:backgroundTint="@color/button_back"
         android:enabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonMoreVectorEasier"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonClearVectorEasier" />
-
-    <Button
-        android:id="@+id/buttonMoreVectorEasier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="More"
-        android:backgroundTint="@color/button_back"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonSeeHowVectorEasier"
+        android:text="See how"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonSeeHowVectorEasier"
-        app:layout_constraintTop_toTopOf="@+id/buttonSeeHowVectorEasier" />
+        app:layout_constraintStart_toEndOf="@+id/buttonClearVectorEasier"
+        app:layout_constraintTop_toTopOf="@+id/buttonClearVectorEasier" />
 
     <TextView
         android:id="@+id/textViewVectorEasierResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text=""
+
+        android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSeeHowVectorEasier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

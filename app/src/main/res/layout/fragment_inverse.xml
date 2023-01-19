@@ -10,93 +10,63 @@
         android:id="@+id/es_linearInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:background="@drawable/ln_border"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/textViewInverse"
+        app:layout_constraintBottom_toTopOf="@+id/seeHowButtonInverse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewInverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="100dp"
-        android:text="RESULT: "
-        android:textColor="@color/white"
-        android:textSize="20sp"
-
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultLinear" />
 
     <Button
         android:id="@+id/buttonCalculateInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FF9800"
-        android:text="CALCULATE"
+        android:backgroundTint="@color/button_back"
+        android:text="="
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonClearInverse"
+        app:layout_constraintBottom_toBottomOf="@+id/seeHowButtonInverse"
+        app:layout_constraintEnd_toStartOf="@+id/seeHowButtonInverse"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seeHowButtonInverse" />
-
+        app:layout_constraintTop_toTopOf="@+id/seeHowButtonInverse" />
 
     <Button
         android:id="@+id/buttonClearInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_back"
         android:progressBackgroundTint="@color/white"
-        android:progressTint="#FF9800"
-        android:text="CLEAR"
+        android:text="C"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonCalculateInverse"
-        app:layout_constraintTop_toBottomOf="@+id/seeHowButtonInverse" />
-
-    <LinearLayout
-        android:id="@+id/resultLinear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </LinearLayout>
+        app:layout_constraintStart_toEndOf="@+id/seeHowButtonInverse"
+        app:layout_constraintTop_toTopOf="@+id/seeHowButtonInverse" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDeterminantInverse"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="150dp"
-        app:layout_constraintBottom_toTopOf="@+id/seeHowButtonInverse"
+        app:layout_constraintBottom_toTopOf="@+id/linearResultIneverse"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/seeHowButtonInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="See how"
+        android:backgroundTint="@color/button_back"
+        android:text="show"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInverse" />
+        app:layout_constraintEnd_toStartOf="@+id/buttonClearInverse"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCalculateInverse" />
 
     <LinearLayout
         android:id="@+id/linearResultIneverse"
@@ -106,9 +76,22 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/seeHowButtonInverse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewInverse"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDeterminantInverse">
+        app:layout_constraintStart_toStartOf="@+id/es_linearInverse"
+        app:layout_constraintTop_toTopOf="@+id/es_linearInverse">
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewResultInverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inverse:"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/linearResultIneverse"
+        app:layout_constraintEnd_toStartOf="@+id/linearResultIneverse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearResultIneverse" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

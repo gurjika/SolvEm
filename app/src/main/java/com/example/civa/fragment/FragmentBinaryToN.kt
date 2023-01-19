@@ -2,10 +2,7 @@ package com.example.civa.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,42 +39,67 @@ class FragmentBinaryToN:Fragment(R.layout.fragment_binary_to_n) {
         val builder = BuilderTool()
         comeFromHistory = FragmentBinaryToNArgs.fromBundle(requireArguments()).comeFromHistory
 
-        if(comeFromHistory){
+        if (comeFromHistory) {
             val receivedBinary = FragmentBinaryToNArgs.fromBundle(requireArguments()).numbers
             editTextNToBinary.text.clear()
             editTextNToBinary.append(receivedBinary)
         }
         buttonCalculate.setOnClickListener {
+
+            if(!builder.checkInternet(requireActivity())){
+                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
             toSendData.clear()
             val size = editTextNToBinary.text.length
             val binary = editTextNToBinary.text.toString()
-            if(!comeFromHistory) {
+
+            fun checkBinaryString(str: String): Boolean {
+                return str.matches("[01]*".toRegex())
+            }
+
+
+            if (!comeFromHistory) {
                 builder.uploadBinary(requireActivity(), database, "$binary;BinaryToN")
             }
             comeFromHistory = false
-            val powArray = mutableListOf<Int>()
-            var toAdd = 0
-            var result = 0
-            val sumArray = mutableListOf<Int>()
-            for((index, i) in (size - 1  downTo   0).withIndex()){
-                toAdd = 2.0.pow(i).toInt()
-                powArray.add(toAdd)
-                sumArray.add(toAdd * binary[index].toString().toInt())
-                result += toAdd * binary[index].toString().toInt()
-            }
-            textViewNToBinary.text = result.toString()
 
-            for(i in 0 until size){
-                toSendData.add(Binary
-                    ( null, null, null,
-                powArray[i].toString(), binary[i].toString(), sumArray[i].toString()))
+            if (checkBinaryString(binary)) {
+                val powArray = mutableListOf<Int>()
+                var toAdd = 0
+                var result = 0
+                val sumArray = mutableListOf<Int>()
+                for ((index, i) in (size - 1 downTo 0).withIndex()) {
+                    toAdd = 2.0.pow(i).toInt()
+                    powArray.add(toAdd)
+                    sumArray.add(toAdd * binary[index].toString().toInt())
+                    result += toAdd * binary[index].toString().toInt()
+                }
+                textViewNToBinary.text = result.toString()
+
+                for (i in 0 until size) {
+                    toSendData.add(
+                        Binary
+                            (
+                            null, null, null,
+                            powArray[i].toString(), binary[i].toString(), sumArray[i].toString()
+                        )
+                    )
+                }
+
+                buttonSeeHow.setOnClickListener {
+                    esLinearToGo.visibility = View.GONE
+                    adapter = RecyclerViewBinary(toSendData, "BinaryToN")
+                    recyclerView.adapter = adapter
+                    recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+                }
             }
-        }
-        buttonSeeHow.setOnClickListener {
-            esLinearToGo.visibility = View.GONE
-            adapter = RecyclerViewBinary(toSendData, "BinaryToN")
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+            else {
+                editTextNToBinary.error = "incorrect binary number"
+                return@setOnClickListener
+            }
         }
     }
 }

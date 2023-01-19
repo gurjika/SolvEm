@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.civa.R
+import com.example.civa.ValidateEditTexts
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.math.BigDecimal
@@ -50,7 +51,7 @@ class FragmentVectorEasier:Fragment(R.layout.fragment_vector_easier) {
 
         buttonCalculate = view.findViewById(R.id.buttonCalculateVectorEasier)
         buttonSeeHow = view.findViewById(R.id.buttonSeeHowVectorEasier)
-        buttonMore = view.findViewById(R.id.buttonMoreVectorEasier)
+
         buttonClear = view.findViewById(R.id.buttonClearVectorEasier)
         result = view.findViewById(R.id.textViewVectorEasierResult)
         val numbersForFirst = mutableListOf<Double>()
@@ -66,7 +67,7 @@ class FragmentVectorEasier:Fragment(R.layout.fragment_vector_easier) {
         builder.buildLinear(requireActivity(), editTextsTwo, esLinearTwo, dimension)
         val checker = GetRidOfZeroes()
         val reduce = ReduceFraction()
-
+        val checkerEditText = ValidateEditTexts()
         if(comeFromHistory){
             val vectorFirst = FragmentVectorEasierArgs.fromBundle(requireArguments()).numbers
             val vectorSecond = FragmentVectorEasierArgs.fromBundle(requireArguments()).numbersSecond
@@ -75,98 +76,131 @@ class FragmentVectorEasier:Fragment(R.layout.fragment_vector_easier) {
                 editTextsTwo[i]!!.append(vectorSecond!![i])
             }
         }
+
+        buttonClear.setOnClickListener {
+            for(i in 0 until dimension){
+                editTextsOne[i]!!.text = null
+                editTextsTwo[i]!!.text = null
+            }
+
+            buttonCalculate.isEnabled = true
+            result.text = null
+        }
         buttonCalculate.setOnClickListener {
             if (operation == "COS") {
-                var sum = 0.0
-                var goToDenominatorOne = 0.0
-                var goToDenominatorTwo = 0.0
+                if (checkerEditText.validateEmVectors(editTextsOne, dimension) &&
+                    checkerEditText.validateEmVectors(editTextsTwo, dimension)
+                ) {
+                    var sum = 0.0
+                    var goToDenominatorOne = 0.0
+                    var goToDenominatorTwo = 0.0
 
-                for(i in 0 until 3){
-                    resultStringOne += editTextsOne[i]!!.text.toString().toDouble().toString() + ";"
-                    resultStringTwo += editTextsTwo[i]!!.text.toString().toDouble().toString() + ";"
-                }
-                resultStringOne = resultStringOne + "COS" + ";" + dimension.toString() + ";To easier"
-                resultStringTwo = "$resultStringTwo$dimension;To easier"
+                    for (i in 0 until 3) {
+                        resultStringOne += checker.noZeroes(editTextsOne[i]!!.text.toString().toDouble()
+                            .toString()) + ";"
+                        resultStringTwo += checker.noZeroes(editTextsTwo[i]!!.text.toString().toDouble()
+                            .toString()) + ";"
+                    }
+                    resultStringOne =
+                        resultStringOne + "COS" + ";" + dimension.toString() + ";To easier"
+                    resultStringTwo = "$resultStringTwo$dimension;To easier"
 
-                for (i in 0 until dimension) {
-                    numbersForFirst.add(editTextsOne[i]!!.text.toString().toDouble())
-                    numbersForSecond.add(editTextsTwo[i]!!.text.toString().toDouble())
-                    sum += numbersForFirst[i] * numbersForSecond[i]
-                    goToDenominatorOne += numbersForFirst[i].pow(2)
-                    goToDenominatorTwo += numbersForSecond[i].pow(2)
-                }
-                var denominator = (goToDenominatorOne * goToDenominatorTwo).toString()
-                var firstOkay = false
-                var secondOkay = false
-                var numerator = sum.toString()
-                if(!numerator.endsWith(".0")){
-                    numerator = BigDecimal(numerator.toDouble())
-                        .setScale(2, RoundingMode.HALF_DOWN).toString()
+                    for (i in 0 until dimension) {
+                        numbersForFirst.add(editTextsOne[i]!!.text.toString().toDouble())
+                        numbersForSecond.add(editTextsTwo[i]!!.text.toString().toDouble())
+                        sum += numbersForFirst[i] * numbersForSecond[i]
+                        goToDenominatorOne += numbersForFirst[i].pow(2)
+                        goToDenominatorTwo += numbersForSecond[i].pow(2)
+                    }
+                    var denominator = (goToDenominatorOne * goToDenominatorTwo).toString()
+                    var firstOkay = false
+                    var secondOkay = false
+                    var numerator = sum.toString()
+                    if (!numerator.endsWith(".0")) {
+                        numerator = BigDecimal(numerator.toDouble())
+                            .setScale(2, RoundingMode.HALF_DOWN).toString()
+                    } else {
+                        firstOkay = true
+                    }
+                    if (!denominator.endsWith(".0")) {
+                        denominator = BigDecimal(denominator.toDouble())
+                            .setScale(2, RoundingMode.HALF_DOWN).toString()
+                    }
+
+                    if (!sqrt(denominator.toDouble()).toString().endsWith(".0")) {
+                        denominator = "√${checker.noZeroes(denominator)}"
+                    } else {
+                        secondOkay = true
+                        denominator = sqrt(denominator.toDouble()).toString().dropLast(2)
+                    }
+                    if (firstOkay && secondOkay) {
+                        result.text = reduce.asFraction(
+                            numerator.toDouble().toInt(),
+                            denominator.toDouble().toInt()
+                        )
+                    } else {
+                        result.text = "${checker.noZeroes(numerator)}/\n$denominator"
+                    }
+
+
+                    builder.uploadVector(
+                        requireActivity(),
+                        database,
+                        resultStringOne,
+                        resultStringTwo,
+                        null
+                    )
                 }
                 else{
-                    firstOkay = true
+                    return@setOnClickListener
                 }
-                if(!denominator.endsWith(".0")){
-                    denominator = BigDecimal(denominator.toDouble())
-                        .setScale(2, RoundingMode.HALF_DOWN).toString()
-                }
-
-                if(!sqrt(denominator.toDouble()).toString().endsWith(".0")){
-                    denominator = "√${checker.noZeroes(denominator)}"
-                }
-                else{
-                    secondOkay = true
-                    denominator = sqrt(denominator.toDouble()).toString().dropLast(2)
-                }
-                if(firstOkay && secondOkay) {
-                    result.text = reduce.asFraction(numerator.toDouble().toInt(), denominator.toDouble().toInt())
-                }
-                else{
-                    result.text = "${checker.noZeroes(numerator)}/\n$denominator"
-                }
-
-
-                builder.uploadVector(requireActivity(),
-                    database,
-                    sharedPreferences,
-                    resultStringOne,
-                    resultStringTwo,
-                    null)
+                buttonCalculate.isEnabled = false
             }
-            else{
-                for(i in 0 until 3){
-                    resultStringOne += editTextsOne[i]!!.text.toString().toDouble().toString() + ";"
-                    resultStringTwo += editTextsTwo[i]!!.text.toString().toDouble().toString() + ";"
-                }
-                resultStringOne = "$resultStringOne*;$dimension;To easier"
-                resultStringTwo = "$resultStringTwo$dimension;To easier"
+            else {
+                if (checkerEditText.validateEmVectors(editTextsOne, dimension) &&
+                    checkerEditText.validateEmVectors(editTextsTwo, dimension)
+                ) {
 
-                val results = mutableListOf<String>()
-                for (i in 0 until dimension) {
-                    numbersForFirst.add(editTextsOne[i]!!.text.toString().toDouble())
-                    numbersForSecond.add(editTextsTwo[i]!!.text.toString().toDouble())
-                    if(!(numbersForFirst[i] * numbersForSecond[i]).toString().endsWith(".0")){
-                        results.add(
-                            BigDecimal(numbersForFirst[i] * numbersForSecond[i])
-                                .setScale(2, RoundingMode.HALF_DOWN).toString())
+                    for (i in 0 until 3) {
+                        resultStringOne += checker.noZeroes(editTextsOne[i]!!.text.toString().toDouble()
+                            .toString()) + ";"
+                        resultStringTwo += checker.noZeroes(editTextsTwo[i]!!.text.toString().toDouble()
+                            .toString()) + ";"
                     }
-                    else{
-                        results
-                            .add(checker.noZeroes((numbersForFirst[i] * numbersForSecond[i]).toString()))
+                    resultStringOne = "$resultStringOne*;$dimension;To easier"
+                    resultStringTwo = "$resultStringTwo$dimension;To easier"
+
+                    val results = mutableListOf<String>()
+                    for (i in 0 until dimension) {
+                        numbersForFirst.add(editTextsOne[i]!!.text.toString().toDouble())
+                        numbersForSecond.add(editTextsTwo[i]!!.text.toString().toDouble())
+                        if (!(numbersForFirst[i] * numbersForSecond[i]).toString().endsWith(".0")) {
+                            results.add(
+                                BigDecimal(numbersForFirst[i] * numbersForSecond[i])
+                                    .setScale(2, RoundingMode.HALF_DOWN).toString()
+                            )
+                        } else {
+                            results
+                                .add(checker.noZeroes((numbersForFirst[i] * numbersForSecond[i]).toString()))
+                        }
                     }
-                }
-                if(dimension == 3){
-                    result.text = "(${results[0]};${results[1]};${results[2]})"
+                    if (dimension == 3) {
+                        result.text = "(${results[0]};${results[1]};${results[2]})"
+                    } else {
+                        result.text = "(${results[0]};${results[1]})"
+                    }
+                    builder.uploadVector(
+                        requireActivity(),
+                        database,
+                        resultStringOne,
+                        resultStringTwo,
+                        null
+                    )
                 }
                 else{
-                    result.text = "(${results[0]};${results[1]})"
+                    return@setOnClickListener
                 }
-                builder.uploadVector(requireActivity(),
-                    database,
-                    sharedPreferences,
-                    resultStringOne,
-                    resultStringTwo,
-                    null)
+                buttonCalculate.isEnabled = false
             }
         }
     }

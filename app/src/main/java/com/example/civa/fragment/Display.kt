@@ -20,7 +20,9 @@ class Display(
     }
 
     override fun onBindViewHolder(holder: DisplayViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.textView7).text = algebrals[position].algebrals
+        holder.itemView.findViewById<TextView>(R.id.textViewA).text = algebrals[position].asAndDs
+        holder.itemView.findViewById<TextView>(R.id.textViewIndex).text = algebrals[position].index
+        holder.itemView.findViewById<TextView>(R.id.textViewInverseResult).text = algebrals[position].algebrals
     }
 
     override fun getItemCount(): Int {

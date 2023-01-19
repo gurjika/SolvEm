@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "180294128219",
-    "project_id": "camera-7760f",
-    "storage_bucket": "camera-7760f.appspot.com"
+    "project_number": "136674909898",
+    "firebase_url": "https://solvem-a43f2-default-rtdb.firebaseio.com",
+    "project_id": "solvem-a43f2",
+    "storage_bucket": "solvem-a43f2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:180294128219:android:7a78bbc2d51af90b3ca57e",
+        "mobilesdk_app_id": "1:136674909898:android:4170f412b48e69a938de33",
         "android_client_info": {
           "package_name": "com.example.civa"
         }
       },
       "oauth_client": [
         {
-          "client_id": "180294128219-ehmi3tjgjmhv4asctl70pq8umfsodom1.apps.googleusercontent.com",
+          "client_id": "136674909898-gfncl3qti564nanhje6gcqmi765d3fl5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDi64vJgUROHLlc4O8_ldU2-Pw2aJ2wSUA"
+          "current_key": "AIzaSyA7UaHCcE77JrRHSEEdDwAkn3Vp3LKYKvU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "180294128219-ehmi3tjgjmhv4asctl70pq8umfsodom1.apps.googleusercontent.com",
+              "client_id": "136674909898-gfncl3qti564nanhje6gcqmi765d3fl5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -17,6 +17,8 @@
         <TextView
             android:id="@+id/textViewHistoryBinary"
             android:layout_width="wrap_content"
+            android:textSize="30sp"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView" />
@@ -26,7 +28,10 @@
         android:id="@+id/buttonHistoryBinary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:text="->"
+        android:textStyle="bold"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

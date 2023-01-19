@@ -1,11 +1,7 @@
 package com.example.civa.fragment
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
-import android.text.InputType
-import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -28,7 +24,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
     private lateinit var database: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var adapter: TableAdapter
-    private lateinit var resultLinearLayout: LinearLayout
+
     private var parentArray:MutableList<String> = mutableListOf()
     private var sumArray:MutableList<String> = mutableListOf()
     private var numberOfColumns = 5
@@ -46,15 +42,16 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
         seeHowButton = view.findViewById(R.id.seeHowButton)
         buttonClear = view.findViewById(R.id.buttonClear)
         result = view.findViewById(R.id.textView)
-        buttonCalculateDeterminant = view.findViewById(R.id.button2)
+        buttonCalculateDeterminant = view.findViewById(R.id.buttonCalculateDeterminant)
         linear = view.findViewById(R.id.es_linear)
-        resultLinearLayout = view.findViewById(R.id.resultLinear)
+
         val checkEditText = ValidateEditTexts()
+        val checker = GetRidOfZeroes()
         n = FragmentDeterminantArgs.fromBundle(requireArguments()).dimension
 
         comeFromHistory = FragmentDeterminantArgs.fromBundle(requireArguments()).comeFromHistory
         resultString = ""
-
+        seeHowButton.isEnabled = false
         numberOfRows = n
         numberOfColumns = n
         array = Array(n) { DoubleArray(n) }
@@ -86,6 +83,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
 
         seeHowButton.setOnClickListener {
             turnOnRecycler()
+            seeHowButton.isEnabled = false
             buttonCalculateDeterminant.isEnabled = false
             adapter = TableAdapter(tablelist)
             recyclerView.adapter = adapter
@@ -95,11 +93,15 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             result.visibility = View.INVISIBLE
         }
         buttonCalculateDeterminant.setOnClickListener {
+            if(!builder.checkInternet(requireActivity())){
+                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             if (checkEditText.validateEm(editTexts, n, n)) {
                 for (i in 0 until n) {
                     for (j in 0 until n) {
                         array[i][j] = editTexts[i][j]?.text.toString().toDouble()
-                        resultString = resultString + array[i][j].toString() + ";"
+                        resultString = resultString + checker.noZeroes(array[i][j].toString()) + ";"
                     }
                 }
             }
@@ -109,7 +111,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             sumArray.add("")
             parentArray.add("")
             buttonCalculateDeterminant.isEnabled = false
-            buttonClear.isClickable = false
+            seeHowButton.isEnabled = true
             display(array)
             aba()
 
@@ -118,16 +120,12 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             resultString = "$resultString$n;$n;DETERMINANT"
 
             database = FirebaseDatabase.getInstance().getReference("Users")
-            sharedPreferences = this.requireActivity().getSharedPreferences(
-                "MY_PREFS",
-                Context.MODE_PRIVATE
-            )
+
 
             if (!comeFromHistory) {
                 builder.uploadMatrix(
                     requireActivity(),
                     database,
-                    sharedPreferences,
                     resultString,
                     null)
             }
@@ -143,6 +141,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             toAddInTableList.clear()
             parentArray.clear()
             sumArray.clear()
+            adapter = TableAdapter(tablelist)
             adapter.notifyDataSetChanged()
             recyclerView.visibility = View.INVISIBLE
             result.visibility = View.VISIBLE
@@ -150,8 +149,9 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
             val setItToZero = TableAdapter(tablelist)
             setItToZero.e = 0
             buttonCalculateDeterminant.isEnabled = true
+            seeHowButton.isEnabled = false
             counter = 0
-            result.text = "RESULT: "
+            result.text = "Determinant: "
 
         }
     }
@@ -161,46 +161,33 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
 
 
     private fun aba() {
-        result.text = "RESULT: "
-
+        val checker = GetRidOfZeroes()
 
         var sum = 0.0
         if(n == 2) {
             val result2x2 = array[0][0] * array[1][1] - array[1][0] * array[0][1]
-            result.text = "Result: $result2x2"
+            result.text = "Determinant:${checker.noZeroes(result2x2.toString())}"
         }
         else {
             for (i in 0 until n) {
                 sum += determinant(i, 0, 0, saveArray)
             }
-
-            if (sum.toString().contains(".0")) {
-                    result.text = "RESULT: ${sum.toString().dropLast(2)}"
-                    buttonCalculateDeterminant.isEnabled = true
-                    buttonClear.isClickable = true
-
-            }
-            else {
-                    result.text = "RESULT: $sum"
-                    buttonCalculateDeterminant.isEnabled = true
-                    buttonClear.isClickable = true
-
-            }
+            result.text = "Determinant:${checker.noZeroes(sum.toString())}"
         }
     }
 
-    private fun determinant(row:Int, column:Int, needed:Int, Array:Array<DoubleArray>):Double{
+    private fun determinant(column:Int, row:Int, needed:Int, Array:Array<DoubleArray>):Double{
         counter ++
         var parent = 0.0
 
         val saveArray = Array((n - 1) - needed){DoubleArray((n - 1)- needed)}
         if(needed == 0){
-            parent = array[column][row]
+            parent = array[row][column]
         }
         if(needed > 0){
-            parent = Array[column][row]
+            parent = Array[row][column]
         }
-        if((row + column) % 2 != 0){
+        if((column + row) % 2 != 0){
             parent = -parent
         }
 
@@ -222,21 +209,16 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
         var e = 0
 
         for (i in 0.. (n - 1) - needed) {
-            if (column == i) {
+            if (row == i) {
                 continue
             }
             for (m in 0..(n - 1) - needed) {
-                if(needed > 0 && row == n - needed - 1) {
-                    if(row == m) {
-                        continue
-                    }
-                }
-                if(row == m){
+
+                if(column == m){
                     continue
                 }
                 if(needed == 0){
                     temporary.add(array[i][m])
-
                 }
                 else{
                     temporary.add(Array[i][m])
@@ -249,15 +231,18 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
                 e++
             }
         }
+
         display(saveArray)
         sums(saveArray)
-        val needed1 = needed + 1
+
+
+        val neededOne = needed + 1
         return if(temporary.size == 4) {
             parent*(saveArray[0][0]*saveArray[1][1]-saveArray[1][0]*saveArray[0][1])
         } else {
             var sum = 0.0
-            for (i in 0..(n - 1) - needed1) {
-                sum += parent * (determinant(i, column, needed1, saveArray))
+            for (i in 0..(n - 1) - neededOne) {
+                sum += parent * (determinant(i, row, neededOne, saveArray))
             }
             sum
         }
@@ -277,7 +262,7 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
         for (i in 0 until dimension) {
             for (j in 0 until dimension) {
                 textViews[i][j] = TextView(requireActivity())
-                setPos.setPosForText(textViews[i][j], i, j, 70)
+                setPos.setPosForText(textViews[i][j], i, j, 100)
                 tableLayout.addView(textViews[i][j])
                 if(Array[i][j].toString().contains(".0")){
                     Array[i][j].toString().dropLast(2)
@@ -289,14 +274,13 @@ class FragmentDeterminant:Fragment(R.layout.fragment_determinant) {
 
     }
     private fun turnOnRecycler(){
+        val checker = GetRidOfZeroes()
         for(j in 0..counter - sumArray.size){
             sumArray.add("")
         }
         for(i in 0 .. counter){
-            if(parentArray[i].contains(".0")){
-                parentArray[i].dropLast(2)
-            }
-            tablelist.add(Table(toAddInTableList[i], parentArray[i], sumArray[i]))
+            tablelist.add(Table(toAddInTableList[i], checker.noZeroes(parentArray[i]),
+                checker.noZeroes(sumArray[i])))
         }
     }
     private fun sums(Array: Array<DoubleArray>){

@@ -26,4 +26,22 @@ class ValidateEditTexts {
         }
         return everyThingAlright
     }
+    fun validateEmVectors(editTexts: Array<EditText?>, dimension:Int):Boolean{
+        for(i in 0 until dimension) {
+            if (editTexts[i]!!.text!!.isEmpty()) {
+                editTexts[i]!!.error = "incorrect number"
+                return false
+            }
+            else if(editTexts[i]!!.text.toString() == "-") {
+                editTexts[i]!!.error = "incorrect number"
+                return false
+            }
+            else if(editTexts[i]!!.text.toString() == "." ||
+                editTexts[i]!!.text.toString() == ".0") {
+                editTexts[i]!!.error = "Incorrect number"
+                return false
+            }
+        }
+        return true
+    }
 }

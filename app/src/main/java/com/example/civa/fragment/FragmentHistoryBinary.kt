@@ -23,12 +23,13 @@ class FragmentHistoryBinary:Fragment(R.layout.fragment_history_binary) {
         database = FirebaseDatabase.getInstance().getReference("Users")
 
         recyclerView = view.findViewById(R.id.recyclerHistoryBinary)
-
+        val builder = BuilderTool()
+        val user = builder.userUID
         var counter: Int
-        database.child("email").child("binary").get().addOnSuccessListener {
+        database.child(user!!).child("binary").get().addOnSuccessListener {
             counter = it.child("0").value.toString().toInt()
             val database = FirebaseDatabase.getInstance()
-            val ref = database.getReference("Users").child("email").child("binary")
+            val ref = database.getReference("Users").child(user).child("binary")
             ref.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (i in 1..counter) {

@@ -31,19 +31,20 @@ class FragmentHistoryVector:Fragment(R.layout.fragment_history_vector) {
         super.onViewCreated(view, savedInstanceState)
 
         database = FirebaseDatabase.getInstance().getReference("Users")
-        sharedPreferences = this.requireActivity().getSharedPreferences(
-            "Vectors",
-            Context.MODE_PRIVATE
-        )
+
 
 
         var counter = 0
         recyclerView = view.findViewById(R.id.recyclerVectorHistory)
+        val builder = BuilderTool()
+        val user = builder.userUID
 
-        database.child("email").child("vector").get().addOnSuccessListener {
+
+
+        database.child(user!!).child("vector").get().addOnSuccessListener {
             counter = it.child("0").value.toString().toInt()
             val database = FirebaseDatabase.getInstance()
-            val ref = database.getReference("Users").child("email").child("vector")
+            val ref = database.getReference("Users").child(user!!).child("vector")
             ref.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (i in 1..counter) {

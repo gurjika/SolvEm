@@ -139,8 +139,8 @@ class FragmentCalculate: Fragment(R.layout.fragment_calculate) {
 
         fun setPos(button: Button?, row: Int, column: Int) {
             val param = GridLayout.LayoutParams()
-            param.width = 70
-            param.height = 70
+            param.width = 120
+            param.height = 120
             param.setGravity(Gravity.CENTER)
             param.rowSpec = GridLayout.spec(row)
             param.columnSpec = GridLayout.spec(column)

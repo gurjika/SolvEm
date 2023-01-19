@@ -28,14 +28,16 @@ class RecyclerViewHistory (
         if(matrixes[position].historyMatrix?.parent != null){
             (matrixes[position].historyMatrix?.parent as ViewGroup).removeView(matrixes[position].historyMatrix)
         }
+
         if(matrixes[position].historyMatrixTwo?.parent != null){
             (matrixes[position].historyMatrixTwo?.parent as ViewGroup).removeView(matrixes[position].historyMatrixTwo)
         }
 
+
+
         if(matrixes[position].historyMatrix != null){
             holder.itemView.findViewById<LinearLayout>(R.id.es_linearHistory)
                 .addView(matrixes[position].historyMatrix)
-            holder.itemView.findViewById<TextView>(R.id.textViewHistory).text = matrixes[position].operation
             holder.itemView.findViewById<LinearLayout>(R.id.es_linearHistoryTwo)
                 .addView(matrixes[position].historyMatrixTwo)
         }
@@ -113,8 +115,6 @@ class RecyclerViewHistory (
                         matrixes[position].toSend, matrixes[position].toSendSecond, true)
                 it.findNavController().navigate(action)
             }
-
-
         }
     }
 

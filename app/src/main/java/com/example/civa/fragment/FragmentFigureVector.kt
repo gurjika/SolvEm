@@ -25,7 +25,8 @@ class FragmentFigureVector:Fragment(R.layout.fragment_figure_vector) {
         operationTextView = view.findViewById(R.id.operationTextView)
         destination = FragmentFigureVectorArgs.fromBundle(requireArguments()).destination
         buttonVectorEnter = view.findViewById(R.id.buttonVectorDimensionEnter)
-
+        dimension = "2"
+        buttonFigureThree.background.setTint(Color.GRAY)
         buttonFigureThree.setOnClickListener {
             buttonFigureThree.background.setTint(Color.parseColor("#FF9800"))
             dimension = "3"

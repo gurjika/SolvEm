@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="150dp">
 
-    <TextView
-        android:id="@+id/textViewHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/es_linearHistoryTwo"
-        app:layout_constraintStart_toEndOf="@+id/es_linearHistory"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/es_linearHistory"
         android:layout_width="wrap_content"
@@ -33,10 +22,10 @@
         android:id="@+id/es_linearHistoryTwo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@drawable/ln_border"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonGoBack"
         app:layout_constraintStart_toEndOf="@+id/es_linearHistory"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -46,8 +35,10 @@
         android:id="@+id/buttonGoBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:layout_weight="1"
-        android:text="Calculate"
+        android:text="->"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

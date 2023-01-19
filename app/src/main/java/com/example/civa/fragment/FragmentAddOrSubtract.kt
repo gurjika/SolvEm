@@ -50,7 +50,7 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
         val builder = BuilderTool()
         comeFromHistory = FragmentAddOrSubtractArgs.fromBundle(requireArguments()).comeFromHistory
 
-
+        seeHowButton.isEnabled = false
 
          array = Array(numberOfRows) { DoubleArray(numberOfColumns) }
          array1 = Array(numberOfRows) { DoubleArray(numberOfColumns) }
@@ -92,7 +92,7 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
         }
 
         val checkEditText = ValidateEditTexts()
-
+        val checker = GetRidOfZeroes()
 
         clear.setOnClickListener {
             for (i in 0 until numberOfRows) {
@@ -101,45 +101,57 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
                     editTexts2[i][j]!!.text = null
                     array[i][j] = 0.0
                     array1[i][j] = 0.0
-                    esLinear1.visibility = View.VISIBLE
-                    esLinear.visibility = View.VISIBLE
-                    linearAddOrSubtractResult.visibility = View.GONE
+
                 }
             }
+            esLinear1.visibility = View.VISIBLE
+            esLinear.visibility = View.VISIBLE
+            linearAddOrSubtractResult.visibility = View.INVISIBLE
+            buttonCalculate.isEnabled = true
         }
 
 
         buttonCalculate.setOnClickListener {
 
-            esLinear.visibility = View.GONE
-            esLinear1.visibility = View.GONE
+            if(!builder.checkInternet(requireActivity())){
+                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
             resultStringOne = ""
             resultStringTwo = ""
-            for (i in 0 until editTexts1.size) {
-                for (j in 0 until editTexts1[0].size) {
-                    if (checkEditText.validateEm(editTexts1, editTexts1.size, editTexts1[0].size)) {
+
+            if (checkEditText.validateEm(editTexts1, editTexts1.size, editTexts1[0].size)) {
+                for (i in 0 until editTexts1.size) {
+                    for (j in 0 until editTexts1[0].size) {
                         array[i][j] = editTexts1[i][j]?.text.toString().toDouble()
-                        resultStringOne = resultStringOne + array[i][j].toString() + ";"
-
-                    } else {
-                        return@setOnClickListener
+                        resultStringOne = resultStringOne + checker.noZeroes(array[i][j].toString()) + ";"
                     }
                 }
             }
+            else{
+                return@setOnClickListener
+            }
 
-
-            for (i in 0 until editTexts2.size) {
-                for (j in 0 until editTexts2[0].size) {
-                    if (checkEditText.validateEm(editTexts2, editTexts2.size, editTexts2[0].size)) {
+            if (checkEditText.validateEm(editTexts2, editTexts2.size, editTexts2[0].size)) {
+                for (i in 0 until editTexts2.size) {
+                    for (j in 0 until editTexts2[0].size) {
                         array1[i][j] = editTexts2[i][j]?.text.toString().toDouble()
-
-                        resultStringTwo = resultStringTwo + array1[i][j].toString() + ";"
-                    } else {
-                        return@setOnClickListener
+                        resultStringTwo = resultStringTwo + checker.noZeroes(array[i][j].toString()) + ";"
                     }
                 }
             }
+            else{
+                return@setOnClickListener
+            }
 
+
+            esLinear.visibility = View.INVISIBLE
+            esLinear1.visibility = View.INVISIBLE
+
+            buttonCalculate.isEnabled = false
+            linearAddOrSubtractResult.visibility = View.VISIBLE
 
             val resultGridLayout = GridLayout(requireActivity())
             resultGridLayout.rowCount = numberOfRows
@@ -154,10 +166,7 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
 
 
             database = FirebaseDatabase.getInstance().getReference("Users")
-            sharedPreferences = this.requireActivity().getSharedPreferences(
-                "MY_PREFS",
-                Context.MODE_PRIVATE
-            )
+
 
             resultStringOne = resultStringOne + numberOfRows.toString()  +
                     ";" + numberOfColumns.toString() + ";" + operation + ";" + toSendOperation
@@ -168,18 +177,17 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
                 builder.uploadMatrix(
                     requireActivity(),
                     database,
-                    sharedPreferences,
                     resultStringOne,
                     resultStringTwo
                 )
             }
-
+        val checker = GetRidOfZeroes()
 
         if(operation == "+") {
             for (i in 0 until numberOfRows) {
                 for (j in 0 until numberOfColumns) {
                     textViews[i][j] = TextView(requireActivity())
-                    textViews[i][j]!!.text = (array[i][j] + array1[i][j]).toString()
+                    textViews[i][j]!!.text = checker.noZeroes((array[i][j] + array1[i][j]).toString())
                     setPos.setPosForText(textViews[i][j], i, j, 100)
                     resultGridLayout.addView(textViews[i][j])
 
@@ -190,12 +198,13 @@ class FragmentAddOrSubtract:Fragment(R.layout.fragment_add_or_subtract) {
                 for (i in 0 until numberOfRows) {
                     for (j in 0 until numberOfColumns) {
                         textViews[i][j] = TextView(requireActivity())
-                        textViews[i][j]!!.text = (array[i][j] - array1[i][j]).toString()
+                        textViews[i][j]!!.text = checker.noZeroes((array[i][j] - array1[i][j]).toString())
                         setPos.setPosForText(textViews[i][j], i, j, 100)
                         resultGridLayout.addView(textViews[i][j])
                     }
                 }
             }
+            linearAddOrSubtractResult.removeAllViews()
             linearAddOrSubtractResult.addView(resultGridLayout)
         }
     }
