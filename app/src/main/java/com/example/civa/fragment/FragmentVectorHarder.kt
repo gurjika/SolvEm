@@ -287,6 +287,7 @@ class FragmentVectorHarder:Fragment(R.layout.fragment_vector_harder) {
         var firstNumber = firstNumbers[1] * secondNumbers[2] - firstNumbers[2] * secondNumbers[1]
         var secondNumber = firstNumbers[0] * secondNumbers[2] - firstNumbers[2] * secondNumbers[0]
         var thirdNumber = firstNumbers[0] * secondNumbers[1] - firstNumbers[1] * secondNumbers[0]
+
         if (!firstNumber.toString().endsWith(".0")) {
             firstNumber = BigDecimal(firstNumber)
                 .setScale(2, RoundingMode.HALF_DOWN).toDouble()

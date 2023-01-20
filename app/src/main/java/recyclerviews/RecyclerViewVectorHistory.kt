@@ -27,20 +27,32 @@ class RecyclerViewVectorHistory (
         if(vectors[position].vectorOne.parent != null){
             (vectors[position].vectorOne.parent as ViewGroup).removeView(vectors[position].vectorOne)
         }
+
+
         if(vectors[position].vectorTwo.parent != null){
             (vectors[position].vectorTwo.parent as ViewGroup).removeView(vectors[position].vectorTwo)
         }
+
+
         if(vectors[position].vectorThree?.parent != null){
             (vectors[position].vectorThree?.parent as ViewGroup).removeView(vectors[position].vectorThree)
         }
+
+
+
+
         holder.itemView.findViewById<LinearLayout>(R.id.es_linearVectorFirst)
             .addView(vectors[position].vectorOne)
+
         holder.itemView.findViewById<LinearLayout>(R.id.es_linearVectorSecond)
             .addView(vectors[position].vectorTwo)
+
         if(vectors[position].vectorThree != null) {
             holder.itemView.findViewById<LinearLayout>(R.id.es_linearVectorThird)
                 .addView(vectors[position].vectorThree)
         }
+
+
         holder.itemView.findViewById<Button>(R.id.buttonGoToVectors).setOnClickListener {
             if(vectors[position].destination == "To easier"){
                 if(vectors[position].operation == "COS"){

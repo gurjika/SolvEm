@@ -46,15 +46,16 @@ class FragmentNToBinary:Fragment(R.layout.fragment_n_to_binary) {
         buttonCalculate.setOnClickListener {
 
             if(!builder.checkInternet(requireActivity())){
-                Toast.makeText(requireActivity(), "inte ar ari", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), "ინტერნეტთან წვდომა არ არის", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             toSendData.clear()
             var goToBinary = editTextNToBinary.text.toString().toLong()
-            if(comeFromHistory) {
+            if(!comeFromHistory) {
                 builder.uploadBinary(
                     requireActivity(), database, "$goToBinary;NToBinary")
             }
+
             comeFromHistory = false
             var leftovers = 0L
             val leftoverArray = mutableListOf<Long>()
@@ -67,6 +68,7 @@ class FragmentNToBinary:Fragment(R.layout.fragment_n_to_binary) {
                 binaryArray.add(goToBinary)
                 leftoverArray.add(leftovers)
             }while (goToBinary / 2 != 0L)
+
             numeratorArray.add("1")
             leftoverArray.add(1)
             binaryArray.add(0)

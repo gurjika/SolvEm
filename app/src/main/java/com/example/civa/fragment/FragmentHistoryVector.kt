@@ -54,6 +54,7 @@ class FragmentHistoryVector:Fragment(R.layout.fragment_history_vector) {
                         var resultArray: List<String> = resultSet!!.split(";")
 
                         val destinationIfClicked = resultArray.last()
+
                         resultArray = resultArray.dropLast(1)
 
                         val dimension = resultArray.last().toInt()

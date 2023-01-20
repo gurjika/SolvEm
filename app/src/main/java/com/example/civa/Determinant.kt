@@ -7,8 +7,8 @@ class Determinant {
     fun determinant(column:Int, row:Int, needed:Int, Array:Array<DoubleArray>, n:Int):Double{
 
             counter++
-            var parent = 0.0
 
+            var parent = 0.0
             val saveArray = Array((n - 1) - needed){DoubleArray((n - 1)- needed)}
             parent = Array[row][column]
             if(counter == 1){
